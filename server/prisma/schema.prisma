@@ -1,0 +1,116 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model user {
+  id        String   @id() @default(cuid())
+  name      String
+  email     String   @unique
+  hash      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+  company   company?
+}
+
+model company {
+  id                  String                @id() @default(cuid())
+  name                String
+  currency            String                @default("MMK")
+  tax_rate            Int                   @default(0)
+  charge_rate         Int                   @default(0)
+  user                user                  @relation(fields: [user_id], references: [id])
+  user_id             String                @unique
+  createdAt           DateTime              @default(now())
+  updatedAt           DateTime              @default(now())
+  category            category[]
+  category_menu_items category_menu_items[]
+  options             options[]
+  orders              orders[]
+}
+
+model category {
+  id                  Int                   @id() @default(autoincrement())
+  name                String
+  company             company               @relation(fields: [companyId], references: [id])
+  companyId           String
+  createdAt           DateTime              @default(now())
+  updatedAt           DateTime              @default(now())
+  category_menu_items category_menu_items[]
+}
+
+model menu_items {
+  id                  Int                   @id @default(autoincrement())
+  name                String
+  price               Int
+  image_url           String?
+  image_public_id     String?
+  description         String?
+  discount            Int                   @default(0)
+  createdAt           DateTime              @default(now())
+  updatedAt           DateTime              @default(now())
+  category_menu_items category_menu_items[]
+  options             options[]
+  orderlines          orderlines[]
+}
+
+model category_menu_items {
+  id           Int        @id @default(autoincrement())
+  menu_items   menu_items @relation(fields: [menu_itemsId], references: [id], onDelete: Cascade)
+  menu_itemsId Int
+  category     category?  @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  categoryId   Int?
+  company      company    @relation(fields: [companyId], references: [id])
+  companyId    String
+  isAvailable  Boolean    @default(true)
+}
+
+model options {
+  id         Int          @id @default(autoincrement())
+  name       String
+  isRequired Boolean
+  min        Int
+  max        Int
+  choices    choices[]
+  menu_items menu_items[]
+  company    company      @relation(fields: [companyId], references: [id])
+  companyId  String
+}
+
+model choices {
+  id          Int          @id @default(autoincrement())
+  name        String
+  price       Int
+  isAvailable Boolean      @default(true)
+  options     options      @relation(fields: [options_id], references: [id], onDelete: Cascade)
+  options_id  Int
+  orderlines  orderlines[]
+}
+
+model orders {
+  id          Int          @id @default(autoincrement())
+  company     company      @relation(fields: [companyId], references: [id])
+  companyId   String
+  amount      Float
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @default(now())
+  order_lines orderlines[]
+}
+
+model orderlines {
+  id           Int        @id @default(autoincrement())
+  quantity     Int
+  description  String?
+  order        orders     @relation(fields: [orderId], references: [id])
+  orderId      Int
+  choices      choices[]
+  menu_items   menu_items @relation(fields: [menu_itemsId], references: [id], onDelete: Cascade)
+  menu_itemsId Int
+}
