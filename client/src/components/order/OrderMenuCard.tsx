@@ -3,6 +3,8 @@ import { useSelector } from "react-redux";
 import { RootState } from "../../store/store";
 import { Category_Menu_Items, RTK_CusOrder } from "../../types";
 import { OrderMenuBox } from "./OrderMenuBox";
+import { useNavigate } from "react-router-dom";
+import { useQuery } from "../../helper";
 
 interface PropType extends HTMLProps<HTMLDivElement> {
   menu: Category_Menu_Items;
@@ -18,6 +20,9 @@ export const OrderMenuCard = ({ menu, ...rest }: PropType) => {
     (state: RootState) => state.customerOrder.company?.currency
   );
   const cart = useSelector((state: RootState) => state.customerOrder.cart);
+  const navigate = useNavigate();
+  const query = useQuery();
+  const company_id = query.get("company_id");
 
   useEffect(() => {
     if (cart.find((i) => i.menu.menu_itemsId === menu.menu_itemsId)) {
@@ -30,13 +35,27 @@ export const OrderMenuCard = ({ menu, ...rest }: PropType) => {
     }
   }, [cart]);
 
+  const checkRoute = () => {
+    return menu.menu_items.options
+      .filter((i) => i.choices.length > 0)
+      .some((i) => i.choices.some((i) => i.isAvailable));
+  };
+
   return (
     <>
       <div
         className={`w-[150px] ${rest.className} ${
           menu.isAvailable ? "" : "opacity-50"
         } ${isExist && "border border-primary"}`}
-        onClick={() => (menu.isAvailable ? setAnchor(true) : "")}
+        onClick={() =>
+          menu.isAvailable
+            ? checkRoute()
+              ? navigate(
+                  `/order/menu_item?id=${menu.menu_itemsId}&company_id=${company_id}`
+                )
+              : setAnchor(true)
+            : ""
+        }
       >
         <img
           src={menu.menu_items.image_url || ""}

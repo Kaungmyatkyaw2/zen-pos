@@ -1,4 +1,4 @@
-import React from "react";
+import React, { HTMLProps } from "react";
 import Radio from "@mui/material/Radio";
 import RadioGroup from "@mui/material/RadioGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
@@ -6,12 +6,19 @@ import FormControl from "@mui/material/FormControl";
 import FormLabel from "@mui/material/FormLabel";
 import { Choice, Option } from "../../types";
 
-interface PropType {
+interface PropType extends HTMLProps<HTMLInputElement> {
   option: Option;
   addChoice: (data: Choice) => void;
+  chosenChoice: Choice[];
 }
 
-export const OptionRadioBox = ({ option, addChoice }: PropType) => {
+export const OptionRadioBox = ({
+  option,
+  addChoice,
+  chosenChoice,
+}: PropType) => {
+  console.log({ chosenChoice });
+
   return (
     <FormControl>
       <FormLabel
@@ -34,6 +41,7 @@ export const OptionRadioBox = ({ option, addChoice }: PropType) => {
             value={JSON.stringify(c)}
             control={
               <Radio
+                checked={chosenChoice?.map((i) => i.id).includes(c.id)}
                 sx={{
                   "&, &.Mui-checked": {
                     color: "#EA7C69",

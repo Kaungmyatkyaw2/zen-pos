@@ -9,6 +9,7 @@ import { useLazyGetCompanyQuery } from "../store/service/company-endpoints/Compa
 import { storeInfo } from "../store/slice/CustomerOrder";
 import { RootState } from "../store/store";
 import { Cart, OrderBanner, OrderTabPanel } from "../components/order";
+import { Outlet } from "react-router-dom";
 
 export const Order = () => {
   const [getCompany, response] = useLazyGetCompanyQuery();
@@ -45,6 +46,7 @@ export const Order = () => {
 
   return (
     <>
+      <Outlet />
       <div className="w-full flex justify-center items-center relative scrollbar-hide">
         <div className="w-full">
           <OrderBanner>{company?.name}</OrderBanner>

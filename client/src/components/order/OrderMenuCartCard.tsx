@@ -25,7 +25,7 @@ export const OrderMenuCartCard = ({ cartMenu }: PropType) => {
         </button>
       </div>
       <img
-        className="w-[130px] h-full object-cover"
+        className="min-w-[130px] h-full object-cover"
         src={cartMenu.menu.menu_items.image_url || ""}
         alt=""
       />

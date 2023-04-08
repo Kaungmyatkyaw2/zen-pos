@@ -124,7 +124,7 @@ export const OrderMenuBox = ({
               </div>
             </div>
           </div>
-
+          {/* 
           {menu.menu_items.options.length ? (
             <div className="pt-[20px]">
               <h1 className="text-gray-300 font-bold text-[25px] pb-[15px]">
@@ -155,7 +155,7 @@ export const OrderMenuBox = ({
             </div>
           ) : (
             <></>
-          )}
+          )} */}
 
           <BtnPrimary
             className="text-white w-full mt-[20px]"

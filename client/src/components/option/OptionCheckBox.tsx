@@ -10,12 +10,14 @@ interface PropType {
   option: Option;
   addChoice: (data: Choice) => void;
   removeChoice: (data: Choice) => void;
+  chosenChoice: Choice[];
 }
 
 export const OptionCheckBox = ({
   option,
   addChoice,
   removeChoice,
+  chosenChoice,
 }: PropType) => {
   return (
     <FormControl>
@@ -35,6 +37,7 @@ export const OptionCheckBox = ({
             key={c.id}
             control={
               <Checkbox
+                defaultChecked={chosenChoice?.map((i) => i.id).includes(c.id)}
                 onChange={(e) =>
                   e.target.checked ? addChoice(c) : removeChoice(c)
                 }

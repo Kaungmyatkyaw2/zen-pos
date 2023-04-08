@@ -5,3 +5,4 @@ export * from "./Setting";
 export * from "./Category";
 export * from "./Option";
 export * from "./Order";
+export * from "./OrderMenu";
