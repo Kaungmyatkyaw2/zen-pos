@@ -9,6 +9,7 @@ import {
   Signin,
   Signup,
   OrderMenu,
+  AdminOrder,
 } from "./pages";
 import { Toaster } from "react-hot-toast";
 import ProtectRoute from "./components/auth/ProtectRoute";
@@ -66,6 +67,7 @@ const App = () => {
             </ProtectRoute>
           }
         ></Route>
+        <Route path="/admin_order" element={<AdminOrder />}></Route>
         <Route path="/order" element={<Order />}></Route>
         <Route path="/order/menu_item" element={<OrderMenu />} />
       </Routes>

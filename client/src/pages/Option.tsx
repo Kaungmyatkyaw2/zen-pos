@@ -13,8 +13,10 @@ import { BtnPrimary } from "../components/form";
 import { AiOutlinePlus } from "react-icons/ai";
 import { OptionCreateForm, OptionTable } from "../components/option";
 import { TabPanel } from "../components/tab";
+import { toast } from "react-hot-toast";
 
 export const Option = () => {
+  const [isLoading, setIsLoading] = useState(true);
   const [getOptions, response] = useLazyGetOptionsQuery();
   const [showCreateForm, setShowCreateForm] = useState(false);
   const [tabValue, setTabValue] = useState(0);
@@ -22,8 +24,12 @@ export const Option = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (response.isSuccess) {
+    if (response.isSuccess && !response.isFetching) {
       dispatch(storeOptions(response.data));
+      setIsLoading(false);
+    } else if (response.isError) {
+      toast.error("Error while fetching data");
+      setIsLoading(false);
     }
   }, [response]);
 
@@ -37,7 +43,7 @@ export const Option = () => {
 
   return (
     <LayoutProvider>
-      {response.status === "pending" ? (
+      {isLoading ? (
         <MediumLoader />
       ) : (
         <>

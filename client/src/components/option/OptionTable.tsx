@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import { AiOutlineDelete, AiOutlineEdit } from "react-icons/ai";
-import { useDeleteOptionMutation } from "../../store/service/option-endpoints/Options.endopoints";
 import { Option } from "../../types";
-import { MenuDeletePopup } from "../menu/MenuDeletePopup";
 import { ChoiceCreateForm } from "./ChoiceCreateForm";
 import { ChoiceRow } from "./ChoiceRow";
 import { OptionDeletePopup } from "./OptionDeletePopup";
 import { OptionEditForm } from "./OptionEditForm";
+import { useSelector } from "react-redux";
+import { RootState } from "../../store/store";
 
 interface PropType {
   option: Option;

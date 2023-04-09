@@ -4,6 +4,7 @@ import {
   AiOutlineSetting,
   AiOutlineDropbox,
   AiOutlineAlipay,
+  AiOutlineNotification,
 } from "react-icons/ai";
 import { useDispatch } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -33,6 +34,13 @@ export const Sidebar = () => {
           isActive={location.pathname === "/option"}
           icon={<AiOutlineAlipay />}
         />
+
+        <SideBtn
+          onClick={() => navigate("/admin_order")}
+          isActive={location.pathname === "/admin_order"}
+          icon={<AiOutlineNotification />}
+        />
+
         <SideBtn
           onClick={() => navigate("/setting")}
           isActive={location.pathname === "/setting"}

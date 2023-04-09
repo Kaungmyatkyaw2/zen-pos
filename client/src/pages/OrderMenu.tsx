@@ -83,8 +83,6 @@ export const OrderMenu = () => {
     }
   };
 
-  console.log(choices);
-
   const filterMenu = (menu_id: string) => {
     for (const index in categories) {
       const menuItem = categories[index].category_menu_items.filter(

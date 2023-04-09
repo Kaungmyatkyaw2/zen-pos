@@ -17,7 +17,6 @@ export const OptionRadioBox = ({
   addChoice,
   chosenChoice,
 }: PropType) => {
-  console.log({ chosenChoice });
 
   return (
     <FormControl>

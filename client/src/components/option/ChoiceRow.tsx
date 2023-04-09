@@ -29,19 +29,19 @@ export const ChoiceRow = ({ choice }: PropType) => {
 
   useEffect(() => {
     if (dropResponse.isSuccess) {
-      toast.success("Successfully deleted");
       dispatch(
         storeOptions(
           options.map((i) =>
-            i.id === showChoice.options_id
+            i.id === choice.options_id
               ? {
                   ...i,
-                  choices: i.choices.filter((c) => c.id !== showChoice.id),
+                  choices: i.choices.filter((c) => c.id !== choice.id),
                 }
               : i
           )
         )
       );
+      toast.success("Successfully deleted");
     } else {
       if (dropResponse.isError) {
         toast.error("An error occured");
@@ -101,15 +101,31 @@ export const ChoiceRow = ({ choice }: PropType) => {
     <>
       <Snackbar
         anchorOrigin={{ vertical: "top", horizontal: "center" }}
-        style={{ marginTop: "0px", border: "none", zIndex: 9999 }}
+        style={{
+          marginTop: "0px",
+          border: "none",
+          zIndex: 9999,
+        }}
+        ContentProps={{
+          sx: {
+            background: "white",
+            color: "black",
+          },
+        }}
         open={dropResponse.isLoading}
-        message={`Deleting ${showChoice.name}`}
+        message={`Deleting ${choice.name}`}
       />
       <Snackbar
+        ContentProps={{
+          sx: {
+            background: "white",
+            color: "black",
+          },
+        }}
         anchorOrigin={{ vertical: "top", horizontal: "center" }}
         style={{ marginTop: "0px", border: "none", zIndex: 9999 }}
         open={updateResponse.isLoading}
-        message={`Updating ${showChoice.name}`}
+        message={`Updating ${choice.name}`}
       />
       <div className="w-full flex justify-between items-center text-dark py-[10px]">
         <div className="w-[25%] pr-[10px]">

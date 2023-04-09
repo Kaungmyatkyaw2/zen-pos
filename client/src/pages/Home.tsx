@@ -12,6 +12,7 @@ import { MenuTabPanel } from "../components/menu";
 import { Category } from "../types";
 
 export const Home = () => {
+  const [isLoading, setIsLoading] = useState(true);
   const [value, setValue] = useState("none");
   const [none, setNone] = useState<Category>({} as Category);
   const [getCategories, response] = useLazyGetCategoriesQuery();
@@ -25,26 +26,26 @@ export const Home = () => {
   }, []);
 
   useEffect(() => {
-    if (response.isSuccess) {
+    if (response.isSuccess  && !response.isFetching) {
       dispatch(storeCategories(response.data));
-    }
-    if (response.isError) {
-      toast.error("An error occured");
+      setIsLoading(false);
+    } else if (response.isError) {
+      toast.error("Error while fetching data");
+      setIsLoading(false);
     }
   }, [response]);
 
   useEffect(() => {
-    setNone(categories.filter(i => i.id === null)[0])
+    setNone(categories.filter((i) => i.id === null)[0]);
   }, [categories]);
 
   const handleChange = (e: React.SyntheticEvent, newValue: string) => {
     setValue(newValue);
   };
 
-
   return (
     <LayoutProvider>
-      {response.isFetching ? (
+      {isLoading ? (
         <MediumLoader />
       ) : (
         <TabContext value={value}>

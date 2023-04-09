@@ -24,12 +24,12 @@ export const Category = () => {
   }, []);
 
   useEffect(() => {
-    if (response.isSuccess) {
+    if (response.isSuccess && !response.isFetching) {
       dispatch(storeCategories(response.data));
       setIsLoading(false);
-    }
-    if (response.isError) {
-      toast.error("An error occured");
+    } else if (response.isError) {
+      toast.error("Error while fetching data");
+      setIsLoading(false);
     }
   }, [response]);
 

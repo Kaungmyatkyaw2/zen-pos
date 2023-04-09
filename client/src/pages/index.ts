@@ -6,3 +6,4 @@ export * from "./Category";
 export * from "./Option";
 export * from "./Order";
 export * from "./OrderMenu";
+export * from "./AdminOrder";
