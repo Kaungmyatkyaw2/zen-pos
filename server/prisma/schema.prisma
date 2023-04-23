@@ -99,6 +99,7 @@ model orders {
   company     company      @relation(fields: [companyId], references: [id])
   companyId   String
   amount      Float
+  isPaid Boolean @default(false)
   createdAt   DateTime     @default(now())
   updatedAt   DateTime     @default(now())
   order_lines orderlines[]
@@ -109,8 +110,15 @@ model orderlines {
   quantity     Int
   description  String?
   order        orders     @relation(fields: [orderId], references: [id])
+  status Status @default(PENDING)
   orderId      Int
   choices      choices[]
   menu_items   menu_items @relation(fields: [menu_itemsId], references: [id], onDelete: Cascade)
   menu_itemsId Int
+}
+
+enum Status {
+  PENDING
+  PREPARING
+  COMPLETE
 }

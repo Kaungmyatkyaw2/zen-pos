@@ -14,6 +14,7 @@ import { CloudinaryModule } from './cloudinary/cloudinary.module';
 import { OptionsModule } from './options/options.module';
 import { ChoicesModule } from './choices/choices.module';
 import { OrderModule } from './order/order.module';
+import { OrderlineModule } from './orderline/orderline.module';
 
 @Module({
   imports: [
@@ -31,6 +32,7 @@ import { OrderModule } from './order/order.module';
     OptionsModule,
     ChoicesModule,
     OrderModule,
+    OrderlineModule,
   ],
   providers: [PrismaService, AuthService, CloudinaryService],
 })

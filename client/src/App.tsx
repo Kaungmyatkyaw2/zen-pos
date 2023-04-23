@@ -67,7 +67,16 @@ const App = () => {
             </ProtectRoute>
           }
         ></Route>
-        <Route path="/admin_order" element={<AdminOrder />}></Route>
+        <Route
+          path="/admin_order"
+          element={
+            
+              <ProtectRoute>
+                <AdminOrder />
+              </ProtectRoute>
+            
+          }
+        ></Route>
         <Route path="/order" element={<Order />}></Route>
         <Route path="/order/menu_item" element={<OrderMenu />} />
       </Routes>

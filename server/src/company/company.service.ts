@@ -65,6 +65,8 @@ export class CompanyService {
       updatedAt: null,
     };
 
+    console.log(company)
+
     return { ...company, category: [none, ...company.category] };
   }
 

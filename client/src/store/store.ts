@@ -16,6 +16,7 @@ import UserSlice from "./slice/User.slice";
 import CategorySlice from "./slice/Category.slice";
 import OptionSlice from "./slice/Option.slice";
 import CustomerOrder from "./slice/CustomerOrder";
+import AdminOrder from "./slice/AdminOrder.slice";
 
 const reducer = {
   [RootApi.reducerPath]: RootApi.reducer,
@@ -24,6 +25,7 @@ const reducer = {
   category: CategorySlice,
   option: OptionSlice,
   customerOrder: CustomerOrder,
+  adminOrder : AdminOrder
 };
 const combinedReducer = combineReducers<typeof reducer>(reducer);
 

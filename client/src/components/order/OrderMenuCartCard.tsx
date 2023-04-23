@@ -35,11 +35,11 @@ export const OrderMenuCartCard = ({ cartMenu }: PropType) => {
           <span> (Qty - {cartMenu.quantity})</span>
         </h1>
         <h1 className="text-[12px] text-gray-400">
-          ({" "}
+          (
           {cartMenu.choices.map(
             (i, index) =>
               ` ${i.name} ${index !== cartMenu.choices.length - 1 ? "," : ""}`
-          )}{" "}
+          )}
           )
         </h1>
         <p className="text-[14px] text-gray-400">{cartMenu.description}</p>

@@ -1,10 +1,30 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { CreateOrderDto } from './dto';
+import { UserType } from 'src/auth/types';
 
 @Injectable()
 export class OrderService {
   constructor(private prisma: PrismaService) {}
+
+  async getOrders (user : UserType) {
+    const orders = await this.prisma.orders.findMany({
+      where : {
+        companyId : user.company.id
+      },
+      include : {
+        order_lines : {
+          include : {
+            menu_items : true,
+            choices : true
+          }
+        }
+      }
+    })
+
+    return orders;
+
+  }
 
   async createOrder(dto: CreateOrderDto) {
     const amount = dto.orderline.reduce(
@@ -47,4 +67,7 @@ export class OrderService {
 
     return orderline;
   }
+
+
+
 }

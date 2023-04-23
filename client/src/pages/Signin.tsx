@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import { NavLink } from "react-router-dom";
 import { InputField, BtnPrimary } from "../components/form";
@@ -7,7 +7,10 @@ import { login } from "../store/slice/Auth.slice";
 
 export const Signin = () => {
   const [signin, response] = useSigninMutation();
-  const form = useRef<HTMLFormElement>(null!);
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+  });
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -16,14 +19,9 @@ export const Signin = () => {
     }
   }, [response]);
 
-
   const handleSignin = (e: React.SyntheticEvent) => {
     e.preventDefault();
-
-    const formData = new FormData(form.current);
-    const payload = Object.fromEntries(formData);
-
-    signin(payload);
+    signin(formData);
   };
 
   return (
@@ -31,7 +29,6 @@ export const Signin = () => {
       <div className="w-[300px]">
         <h1 className="text-[30px] font-bold mb-[20px]">Sign in</h1>
         <form
-          ref={form}
           onSubmit={(e) => handleSignin(e)}
           className="w-full space-y-[15px]"
         >
@@ -39,14 +36,24 @@ export const Signin = () => {
             name="email"
             label="Email"
             placeholder="example@gmail.com"
+            onChange={(e) =>
+              setFormData({ ...formData, email: e.currentTarget.value })
+            }
           />
           <InputField
             name="password"
             label="Password"
             placeholder="example password"
+            onChange={(e) =>
+              setFormData({ ...formData, password: e.currentTarget.value })
+            }
           />
           <div className="pt-[10px]">
-            <BtnPrimary width={"full"} isLoading={response.isLoading}>
+            <BtnPrimary
+              disabled={!formData.email.length || formData.password.length < 6}
+              width={"full"}
+              isLoading={response.isLoading}
+            >
               Log in
             </BtnPrimary>
           </div>
