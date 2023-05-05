@@ -1,4 +1,17 @@
-import { IsEmail, IsNotEmpty, IsOptional, IsString, MaxLength, MinLength } from 'class-validator';
+import {
+  IsBoolean,
+  IsEmail,
+  IsNotEmpty,
+  IsOptional,
+  IsString,
+  MaxLength,
+  MinLength,
+} from 'class-validator';
+
+enum Role {
+  CUSTOMER,
+  SELLER,
+}
 
 export class SignUpAuthDto {
   @IsString()
@@ -14,4 +27,7 @@ export class SignUpAuthDto {
   @MinLength(6)
   @MaxLength(6)
   password: string;
+
+  @IsBoolean()
+  isSeller: boolean;
 }

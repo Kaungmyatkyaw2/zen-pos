@@ -17,27 +17,35 @@ export class AuthService {
   async signup(dto: SignUpAuthDto) {
     try {
       const hash = await argon.hash(dto.password);
+      const role = dto.isSeller ? 'SELLER' : 'CONSUMER';
       delete dto.password;
+      delete dto.isSeller;
       const user = await this.prisma.user.create({
         data: {
           ...dto,
+          role,
           hash: hash,
         },
       });
 
-      const company = await this.prisma.company.create({
-        data: {
-          name: user.name,
-          user_id: user.id,
-        },
-      });
+      if (user.role === 'SELLER') {
+        const company = await this.prisma.company.create({
+          data: {
+            name: user.name,
+            user_id: user.id,
+          },
+        });
 
-      if (company) {
-        return this.signToken({ email: user.email, sub: user.id });
+        if (company) {
+          return this.signToken({ email: user.email, sub: user.id });
+        } else {
+          throw new ForbiddenException('An error occured in creating company');
+        }
       } else {
-        throw new ForbiddenException('An error occured in creating company');
+        return this.signToken({ email: user.email, sub: user.id });
       }
     } catch (error) {
+      console.log(error);
       if (error instanceof Prisma.PrismaClientKnownRequestError) {
         if (error.code === 'P2002') {
           throw new ForbiddenException('Crendetials already taken');

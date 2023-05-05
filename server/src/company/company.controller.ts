@@ -19,4 +19,9 @@ export class CompanyController {
   getCompany(@Query('id') company_id: string) {
     return this.companyService.getCompany(company_id);
   }
+
+  @Get('getCompanies')
+  getComapnies() {
+    return this.companyService.getCompanies();
+  }
 }

@@ -1,5 +1,5 @@
 import { category_menu_items, choices, menu_items } from '@prisma/client';
-import { IsArray, IsNotEmpty, IsString } from 'class-validator';
+import { IsArray, IsNotEmpty, IsNumber, IsString } from 'class-validator';
 
 interface Category_Menu_Items extends category_menu_items {
   menu_items: menu_items;
@@ -18,4 +18,11 @@ export class CreateOrderDto {
     description: string;
     choices: choices[];
   }[];
+  @IsNumber()
+  @IsNotEmpty()
+  taxRate: number;
+
+  @IsNumber()
+  @IsNotEmpty()
+  chargeRate: number;
 }

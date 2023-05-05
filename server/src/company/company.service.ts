@@ -65,9 +65,37 @@ export class CompanyService {
       updatedAt: null,
     };
 
-    console.log(company)
+    const categories = [none, ...company.category];
 
-    return { ...company, category: [none, ...company.category] };
+    const returnData = { ...company, category: categories };
+
+    return returnData;
+  }
+
+  async getCompanies() {
+    const companies = await this.prisma.company.findMany({
+      include: {
+        category: {
+          include: {
+            category_menu_items: {
+              include: {
+                menu_items: {
+                  include: {
+                    options: {
+                      include: {
+                        choices: true,
+                      },
+                    },
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
+    });
+
+    return companies;
   }
 
   async updateCompany(companyId: string, dto: UpdateCompanyDto) {

@@ -1,48 +1,52 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
-import { CreateOrderDto } from './dto';
+import { CreateOrderDto, UpdateOrderStatus } from './dto';
 import { UserType } from 'src/auth/types';
+import { OrderlineStatus } from 'src/orderline/type';
 
 @Injectable()
 export class OrderService {
   constructor(private prisma: PrismaService) {}
 
-  async getOrders (user : UserType) {
+  async getOrders(user: UserType) {
     const orders = await this.prisma.orders.findMany({
-      where : {
-        companyId : user.company.id
+      where: {
+        companyId: user.company.id,
       },
-      include : {
-        order_lines : {
-          include : {
-            menu_items : true,
-            choices : true
-          }
-        }
-      }
-    })
+      include: {
+        order_lines: {
+          include: {
+            menu_items: true,
+            choices: true,
+          },
+        },
+      },
+    });
 
     return orders;
-
   }
 
   async createOrder(dto: CreateOrderDto) {
-    const amount = dto.orderline.reduce(
-      (total, i) => total + i.quantity * i.menu.menu_items.price,
+    let amount = dto.orderline.reduce(
+      (total, i) =>
+        total +
+        i.quantity *
+          ((i.menu.menu_items.price / 100) * i.menu.menu_items.discount),
       0,
     );
 
-    let choiceAmount = 0;
-
     dto.orderline.map((i) =>
       i.choices.map((i) => {
-        choiceAmount += i.price;
+        amount += i.price;
       }),
     );
 
+    let taxAmount = (amount / 100) * dto.taxRate;
+    let chargeAmount = (amount / 100) * dto.chargeRate;
+
     const order = await this.prisma.orders.create({
       data: {
-        amount: amount + choiceAmount,
+        amount: amount + taxAmount + chargeAmount,
         companyId: dto.company_id,
       },
     });
@@ -68,6 +72,17 @@ export class OrderService {
     return orderline;
   }
 
+  async updateOrderStatus(id: number, dto: UpdateOrderStatus) {
+    const updatedOrderlines = await this.prisma.orderlines.updateMany({
+      where: {
+        orderId: +id,
+        status: dto.whichStatus,
+      },
+      data: {
+        status: dto.updateStatus,
+      },
+    });
 
-
+    return updatedOrderlines;
+  }
 }

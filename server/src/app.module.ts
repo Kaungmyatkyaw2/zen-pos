@@ -35,5 +35,6 @@ import { OrderlineModule } from './orderline/orderline.module';
     OrderlineModule,
   ],
   providers: [PrismaService, AuthService, CloudinaryService],
+  controllers: [],
 })
 export class AppModule {}

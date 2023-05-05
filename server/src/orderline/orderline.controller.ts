@@ -1,14 +1,17 @@
-import { Controller, ParseIntPipe, Patch, Query } from '@nestjs/common';
+import { Body, Controller, ParseIntPipe, Patch, Query } from '@nestjs/common';
 import { UpdateOrderlineDto } from './dto';
 import { OrderlineService } from './orderline.service';
+import { OrderlineStatus } from './type';
 
 @Controller('orderline')
 export class OrderlineController {
-    constructor(private orderlineService : OrderlineService){}
+  constructor(private orderlineService: OrderlineService) {}
 
-    @Patch('update?')
-    updateOrderline(@Query('id',ParseIntPipe) id : number,dto : UpdateOrderlineDto){
-        return this.orderlineService.updateOrderline(id,dto)
-    }
-
+  @Patch('updateOrderlineStatus?')
+  updateOrderline(
+    @Query('id', ParseIntPipe) id: number,
+    @Body() dto: { status: OrderlineStatus },
+  ) {
+    return this.orderlineService.updateOrderlineStatus(id, dto.status);
+  }
 }
