@@ -6,6 +6,7 @@ import { useDispatch } from "react-redux";
 import { useCreateOptionsMutation } from "../../store/service/option-endpoints/Options.endopoints";
 import { insertOption } from "../../store/slice/Option.slice";
 import { BtnPrimary, CheckboxToggle, InputField, TextArea } from "../form";
+import { validateNumber } from "../../function";
 
 interface PropType {
   onClose: () => void;
@@ -16,7 +17,7 @@ export const OptionCreateForm = ({ onClose }: PropType) => {
   const [formData, setFormData] = useState({
     name: "",
     max: "",
-    min: "",
+    min: "0",
     isRequired: false,
   });
   const [choice, setChoice] = useState({
@@ -31,6 +32,14 @@ export const OptionCreateForm = ({ onClose }: PropType) => {
     }[]
   >([]);
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (formData.isRequired) {
+      setFormData({ ...formData, min: "1" });
+    } else {
+      setFormData({ ...formData, min: "0" });
+    }
+  }, [formData.isRequired]);
 
   useEffect(() => {
     if (response.isSuccess) {
@@ -76,6 +85,7 @@ export const OptionCreateForm = ({ onClose }: PropType) => {
               name="name"
               label="Option Name"
               placeholder="example name"
+              value={formData.name}
               onChange={(e) =>
                 setFormData({ ...formData, name: e.currentTarget.value })
               }
@@ -86,6 +96,8 @@ export const OptionCreateForm = ({ onClose }: PropType) => {
                 label="Maximum"
                 type="number"
                 placeholder="Maximum"
+                onKeyPress={(e) => validateNumber(e, false)}
+                value={formData.max}
                 onChange={(e) =>
                   setFormData({ ...formData, max: e.currentTarget.value })
                 }
@@ -95,6 +107,9 @@ export const OptionCreateForm = ({ onClose }: PropType) => {
                 label="Min"
                 type="number"
                 placeholder="Minimum"
+                onKeyPress={(e) => validateNumber(e, true)}
+                value={formData.min}
+                disabled={!formData.isRequired}
                 onChange={(e) =>
                   setFormData({ ...formData, min: e.currentTarget.value })
                 }
@@ -107,7 +122,7 @@ export const OptionCreateForm = ({ onClose }: PropType) => {
               onChange={(e) =>
                 setFormData({
                   ...formData,
-                  isRequired: e.currentTarget.checked,
+                  isRequired: !formData.isRequired,
                 })
               }
             />

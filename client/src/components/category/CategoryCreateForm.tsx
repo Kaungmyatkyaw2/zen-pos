@@ -32,7 +32,7 @@ export const CategoryCreateForm = ({ onClose }: PropType) => {
   };
 
   return (
-    <div className="z-[10] bg-dark bg-opacity-80 fixed top-0 left-0 w-full h-[100vh] flex justify-center items-center">
+    <div className="z-[9999] bg-dark bg-opacity-80 fixed top-0 left-0 w-full h-[100vh] flex justify-center items-center">
       <button
         onClick={onClose}
         disabled={response.isLoading}
@@ -52,7 +52,7 @@ export const CategoryCreateForm = ({ onClose }: PropType) => {
           />
           <div className="pt-[10px]">
             <BtnPrimary
-              disabled={response.isLoading}
+              disabled={response.isLoading || !name.length}
               width={"full"}
               isLoading={response.isLoading}
             >

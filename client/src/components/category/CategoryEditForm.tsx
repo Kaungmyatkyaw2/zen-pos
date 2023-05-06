@@ -63,7 +63,7 @@ export const CategoryEditForm = ({ data, onClose }: PropType) => {
           />
           <div className="pt-[10px]">
             <BtnPrimary
-              disabled={response.isLoading}
+              disabled={response.isLoading || !name.length}
               width={"full"}
               isLoading={response.isLoading}
             >

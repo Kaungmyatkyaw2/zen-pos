@@ -10,6 +10,7 @@ import { insertOption, storeOptions } from "../../store/slice/Option.slice";
 import { RootState } from "../../store/store";
 import { Option } from "../../types";
 import { BtnPrimary, CheckboxToggle, InputField, TextArea } from "../form";
+import { validateNumber } from "../../function";
 
 interface PropType {
   onClose: () => void;
@@ -26,6 +27,14 @@ export const OptionEditForm = ({ onClose, option }: PropType) => {
   });
   const options = useSelector((state: RootState) => state.option.options);
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (formData.isRequired) {
+      setFormData({ ...formData, min: "1" });
+    } else {
+      setFormData({ ...formData, min: "0" });
+    }
+  }, [formData.isRequired]);
 
   useEffect(() => {
     if (response.isSuccess) {
@@ -51,7 +60,6 @@ export const OptionEditForm = ({ onClose, option }: PropType) => {
 
     update({ id: option.id, data: payload });
   };
-
 
   return (
     <>
@@ -86,6 +94,7 @@ export const OptionEditForm = ({ onClose, option }: PropType) => {
                 type="number"
                 placeholder="Maximum"
                 value={formData.max}
+                onKeyPress={(e) => validateNumber(e, false)}
                 onChange={(e) =>
                   setFormData({ ...formData, max: e.currentTarget.value })
                 }
@@ -96,6 +105,8 @@ export const OptionEditForm = ({ onClose, option }: PropType) => {
                 type="number"
                 placeholder="Minimum"
                 value={formData.min}
+                onKeyPress={(e) => validateNumber(e, true)}
+                disabled={!formData.isRequired}
                 onChange={(e) =>
                   setFormData({ ...formData, min: e.currentTarget.value })
                 }

@@ -15,8 +15,17 @@ const CompanyEndpoints = RootApi.injectEndpoints({
         method: "GET",
       }),
     }),
+    getCompanies: builder.query({
+      query: () => ({
+        url: `/company/getCompanies`,
+        method: "GET",
+      }),
+    }),
   }),
 });
 
-export const { useUpdateCompanyMutation, useLazyGetCompanyQuery } =
-  CompanyEndpoints;
+export const {
+  useUpdateCompanyMutation,
+  useLazyGetCompanyQuery,
+  useLazyGetCompaniesQuery,
+} = CompanyEndpoints;

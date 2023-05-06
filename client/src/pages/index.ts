@@ -7,3 +7,5 @@ export * from "./Option";
 export * from "./Order";
 export * from "./OrderMenu";
 export * from "./AdminOrder";
+export * from "./Companies";
+export * from "./OrderStatus";

@@ -21,6 +21,7 @@ model user {
   createdAt   DateTime @default(now())
   updatedAt   DateTime @default(now())
   company     company?
+  orders      orders[]
 }
 
 model company {
@@ -102,6 +103,8 @@ model orders {
   company     company      @relation(fields: [companyId], references: [id])
   companyId   String
   amount      Float
+  customer    user         @relation(fields: [customer_id], references: [id])
+  customer_id String
   isPaid      Boolean      @default(false)
   createdAt   DateTime     @default(now())
   updatedAt   DateTime     @default(now())

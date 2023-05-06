@@ -7,20 +7,13 @@ import { RootState } from "../store/store";
 import { storeActiveOrder, storeOrders } from "../store/slice/AdminOrder.slice";
 import { toast } from "react-hot-toast";
 import { MediumLoader } from "../components/loader";
-import {
-  AdminOrderRow,
-  AdminOrderSidebar,
-  AdminOrderlineCard,
-} from "../components/admin_order";
+import { AdminOrderRow, AdminOrderSidebar } from "../components/admin_order";
 
 export const AdminOrder = () => {
   const [getOrders, response] = useLazyGetOrdersQuery();
   const [isLoading, setIsLoading] = useState(true);
   const dispatch = useDispatch();
   const orders = useSelector((state: RootState) => state.adminOrder.orders);
-  const activeOrder = useSelector(
-    (state: RootState) => state.adminOrder.activeOrder
-  );
 
   useEffect(() => {
     getOrders("");

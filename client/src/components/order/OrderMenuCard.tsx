@@ -68,10 +68,24 @@ export const OrderMenuCard = ({ menu, ...rest }: PropType) => {
               ? menu.menu_items.name.slice(0, 10) + ".."
               : menu.menu_items.name}
           </p>
-          <p className="text-primary font-medium">
-            {menu.menu_items.price}{" "}
-            <span className="text-[13px]">{currency || ""}</span>
-          </p>
+          <div className="flex flex-col items-center">
+            <p
+              className={`text-primary font-medium ${
+                menu.menu_items.discount && "line-through"
+              }`}
+            >
+              {menu.menu_items.price}
+              <span className="text-[13px]">{currency || ""}</span>
+            </p>
+            {menu.menu_items.discount > 0 ? (
+              <p className={`text-primary font-medium `}>
+                {(menu.menu_items.price / 100) * menu.menu_items.discount}
+                <span className="text-[13px]">{currency || ""}</span>
+              </p>
+            ) : (
+              <></>
+            )}
+          </div>
         </div>
       </div>
       <OrderMenuBox

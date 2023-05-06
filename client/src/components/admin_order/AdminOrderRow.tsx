@@ -17,31 +17,32 @@ export const AdminOrderRow = ({ order }: Props) => {
   const createdDate = new Date(order.createdAt);
   const amOrpm = createdDate.getHours() > 12 ? " PM" : " AM";
 
-  const [status, setStatus] = useState("Pending");
+  const [info, setInfo] = useState({
+    status: "Pending",
+    className: "text-orange bg-orange",
+  });
 
   useEffect(() => {
-    const checkPending = activeOrder?.order_lines.some(
-      (i) => i.status === "PENDING"
-    );
-    const checkComplete = activeOrder?.order_lines.every(
+    const checkPending = order?.order_lines.some((i) => i.status === "PENDING");
+    const checkComplete = order?.order_lines.every(
       (i) => i.status === "COMPLETE"
     );
 
     if (!checkPending && !checkComplete) {
-      setStatus("Preparing");
+      setInfo({
+        status: "Preparing",
+        className: "text-secondary bg-secondary",
+      });
       return;
     }
 
     if (checkComplete) {
-      setStatus("Complete");
+      setInfo({ status: "Complete", className: "text-green-400 bg-green-400" });
       return;
     }
 
-    setStatus("Pending");
+    setInfo({ status: "Pending", className: "text-orange bg-orange" });
   }, [order]);
-
-
-
 
   return (
     <>
@@ -68,8 +69,10 @@ export const AdminOrderRow = ({ order }: Props) => {
             <h1 className="text-[21px] font-bold">
               {user.company?.currency} {order.amount}
             </h1>
-            <button className="p-[3px] px-[15px] text-[12px] rounded-full bg-green-400 text-white">
-              {status}
+            <button
+              className={`p-[3px] px-[15px] text-[12px] rounded-full ${info.className}  bg-opacity-40`}
+            >
+              {info.status}
             </button>
           </div>
         </div>

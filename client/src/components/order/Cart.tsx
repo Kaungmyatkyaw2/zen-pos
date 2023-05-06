@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { BtnPrimary } from "../form";
 import { OrderMenuCartCard } from "./OrderMenuCartCard";
 import { Drawer } from "@mui/material";
@@ -7,7 +7,9 @@ import { useCreateOrderMutation } from "../../store/service/order-endpoints/Orde
 import { RootState } from "../../store/store";
 import { useDispatch, useSelector } from "react-redux";
 import { useQuery } from "../../helper";
-import { removeFromCart } from "../../store/slice/CustomerOrder";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-hot-toast";
+import { emptyCart } from "../../store/slice/CustomerOrder";
 
 interface PropType {
   isOpen: boolean;
@@ -17,11 +19,32 @@ interface PropType {
 export const Cart = ({ isOpen, onClose }: PropType) => {
   const [createOrder, response] = useCreateOrderMutation();
   const cart = useSelector((state: RootState) => state.customerOrder.cart);
+  const user = useSelector((state: RootState) => state.user.user);
+  const company = useSelector(
+    (state: RootState) => state.customerOrder.company
+  );
   const query = useQuery();
   const company_id = query.get("company_id");
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (response.isSuccess) {
+      dispatch(emptyCart([]));
+      navigate(`/order/status?id=${response.data.id}`);
+    } else if (response.isError) {
+      toast.error("An error occured");
+    }
+  }, [response]);
 
   const handleCreateOrder = () => {
-    const payload = { orderline: cart, company_id };
+    const payload = {
+      orderline: cart,
+      company_id,
+      taxRate: company?.tax_rate,
+      chargeRate: company?.charge_rate,
+      customer_id: user?.id,
+    };
     createOrder(payload);
   };
 
@@ -53,11 +76,18 @@ export const Cart = ({ isOpen, onClose }: PropType) => {
           </button>
         </div>
         <div className="space-y-[20px] pt-[20px]">
-          {cart.map((mc, index) => (
-            <OrderMenuCartCard key={index} cartMenu={mc} />
-          ))}
+          {cart.length ? (
+            cart.map((mc, index) => (
+              <OrderMenuCartCard key={index} cartMenu={mc} />
+            ))
+          ) : (
+            <h1 className="text-[20px] font-medium text-center">
+              No Order Yet
+            </h1>
+          )}
         </div>
         <BtnPrimary
+          disabled={response.isLoading}
           isLoading={response.isLoading}
           onClick={handleCreateOrder}
           width={"full"}

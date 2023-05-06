@@ -22,9 +22,8 @@ export const Signup = () => {
     const formData = new FormData(form.current);
     const payload = Object.fromEntries(formData);
 
-    signup(payload);
+    signup({ ...payload, isSeller: false });
   };
-
 
   return (
     <div className="w-full h-[100vh] flex justify-center items-center">

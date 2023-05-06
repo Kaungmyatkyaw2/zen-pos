@@ -1,14 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
-import {
-  Category,
-  Category_Menu_Items,
-  Company,
-  RTK_CusOrder,
-} from "../../types";
+import { Category, Company, RTK_CusOrder } from "../../types";
 
 interface initialState {
   categories: Category[] | [];
   company: Company | null;
+  companies: Company[];
   cart: RTK_CusOrder[] | [];
 }
 
@@ -16,12 +12,16 @@ const initialState: initialState = {
   categories: [],
   company: null,
   cart: [],
+  companies: [],
 };
 
 const CustomerOrder = createSlice({
   name: "CustomerOrder",
   initialState,
   reducers: {
+    storeCompanies: (state, action) => {
+      state.companies = action.payload;
+    },
     storeInfo: (state, action) => {
       const data = action.payload;
       state.company = data;
@@ -41,9 +41,18 @@ const CustomerOrder = createSlice({
         (i) => i.menu.menu_items.id !== action.payload
       );
     },
+    emptyCart: (state, action) => {
+      state.cart = [];
+    },
   },
 });
 
-export const { storeInfo, addToCart, editCart, removeFromCart } =
-  CustomerOrder.actions;
+export const {
+  storeInfo,
+  addToCart,
+  editCart,
+  removeFromCart,
+  storeCompanies,
+  emptyCart,
+} = CustomerOrder.actions;
 export default CustomerOrder.reducer;

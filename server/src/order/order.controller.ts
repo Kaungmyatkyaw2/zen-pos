@@ -14,19 +14,24 @@ import { GetUser } from 'src/auth/decorator';
 import { UserType } from 'src/auth/types';
 import { JwtGuard } from 'src/auth/guard';
 
+@UseGuards(JwtGuard)
 @Controller('order')
 export class OrderController {
   constructor(private orderService: OrderService) {}
 
   @Post('create')
-  createOrder(@Body() dto: CreateOrderDto) {
-    return this.orderService.createOrder(dto);
+  createOrder(@GetUser('id') id: string, @Body() dto: CreateOrderDto) {
+    return this.orderService.createOrder({ ...dto, customer_id: id });
   }
 
-  @UseGuards(JwtGuard)
   @Get()
   getOrders(@GetUser() user: UserType) {
     return this.orderService.getOrders(user);
+  }
+
+  @Get('getOrder?')
+  getOrder(@Query('id', ParseIntPipe) id: number) {
+    return this.orderService.getOrder(id);
   }
 
   @Patch('updateOrderStatus?')

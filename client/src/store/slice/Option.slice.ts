@@ -36,10 +36,12 @@ const OptionSlice = createSlice({
   },
   extraReducers: {
     ["User/insertCompany"]: (state, action) => {
-      state.options = action.payload.options;
+      if (action.payload?.role === "SELLER") {
+        state.options = action.payload.options;
+      }
     },
   },
 });
 
-export const { storeOptions, insertOption,updateChoice } = OptionSlice.actions;
+export const { storeOptions, insertOption, updateChoice } = OptionSlice.actions;
 export default OptionSlice.reducer;

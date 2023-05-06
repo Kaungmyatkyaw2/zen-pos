@@ -66,7 +66,6 @@ export const MenuCreateForm = ({ onClose, id }: PropType) => {
     if (file) {
       formData.append("file", file);
     }
-
     create(formData);
   };
 

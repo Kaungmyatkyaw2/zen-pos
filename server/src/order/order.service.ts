@@ -20,6 +20,26 @@ export class OrderService {
             choices: true,
           },
         },
+        customer: true,
+      },
+    });
+
+    return orders;
+  }
+
+  async getOrder(id: number) {
+    const orders = await this.prisma.orders.findUnique({
+      where: {
+        id: id,
+      },
+      include: {
+        order_lines: {
+          include: {
+            menu_items: true,
+            choices: true,
+          },
+        },
+        customer: true,
       },
     });
 
@@ -48,6 +68,7 @@ export class OrderService {
       data: {
         amount: amount + taxAmount + chargeAmount,
         companyId: dto.company_id,
+        customer_id: dto.customer_id,
       },
     });
 
@@ -69,7 +90,7 @@ export class OrderService {
       ),
     );
 
-    return orderline;
+    return order;
   }
 
   async updateOrderStatus(id: number, dto: UpdateOrderStatus) {

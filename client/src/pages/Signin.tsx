@@ -10,6 +10,7 @@ export const Signin = () => {
   const [formData, setFormData] = useState({
     email: "",
     password: "",
+    isSeller: true,
   });
   const dispatch = useDispatch();
 

@@ -10,6 +10,8 @@ import {
   Signup,
   OrderMenu,
   AdminOrder,
+  Companies,
+  OrderStatus,
 } from "./pages";
 import { Toaster } from "react-hot-toast";
 import ProtectRoute from "./components/auth/ProtectRoute";
@@ -70,15 +72,43 @@ const App = () => {
         <Route
           path="/admin_order"
           element={
-            
-              <ProtectRoute>
-                <AdminOrder />
-              </ProtectRoute>
-            
+            <ProtectRoute>
+              <AdminOrder />
+            </ProtectRoute>
           }
         ></Route>
-        <Route path="/order" element={<Order />}></Route>
-        <Route path="/order/menu_item" element={<OrderMenu />} />
+        <Route
+          path="/order/companies"
+          element={
+            <ProtectRoute>
+              <Companies />
+            </ProtectRoute>
+          }
+        ></Route>
+        <Route
+          path="/order"
+          element={
+            <ProtectRoute>
+              <Order />
+            </ProtectRoute>
+          }
+        ></Route>
+        <Route
+          path="/order/menu_item"
+          element={
+            <ProtectRoute>
+              <OrderMenu />
+            </ProtectRoute>
+          }
+        />
+        <Route
+          path="/order/status"
+          element={
+            <ProtectRoute>
+              <OrderStatus />
+            </ProtectRoute>
+          }
+        />
       </Routes>
     </>
   );

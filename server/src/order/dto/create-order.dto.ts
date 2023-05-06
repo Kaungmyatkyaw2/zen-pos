@@ -25,4 +25,7 @@ export class CreateOrderDto {
   @IsNumber()
   @IsNotEmpty()
   chargeRate: number;
+  @IsString()
+  @IsNotEmpty()
+  customer_id: string;
 }

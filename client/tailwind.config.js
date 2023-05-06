@@ -11,6 +11,8 @@ module.exports = {
         softdark: "#252836",
         softestdark: "#393C49",
         primary: "#EA7C69",
+        secondary: "#9288E0",
+        orange: "#FFB572",
       },
       boxShadow: {
         custom: "0px 8px 24px rgba(234, 124, 105, 0.32)",

@@ -1,10 +1,12 @@
 import React, { HTMLProps, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useLocation, useNavigate } from "react-router-dom";
+import { Navigate, useLocation, useNavigate } from "react-router-dom";
 import { useLazyGetmeQuery } from "../../store/service/auth-endpoints/Auth.endpoints";
 import { insertCompany, insertUser } from "../../store/slice/User.slice";
 import { RootState } from "../../store/store";
 import { ScreenLoader } from "../loader";
+import ProtectSeller from "./ProtectSeller";
+import ProtectCustomer from "./ProtectCustomer";
 
 const ProtectRoute = ({ children }: HTMLProps<HTMLDivElement>) => {
   const [isLoading, setIsLoading] = useState(true);
@@ -13,6 +15,7 @@ const ProtectRoute = ({ children }: HTMLProps<HTMLDivElement>) => {
   const location = useLocation();
   const dispatch = useDispatch();
   const token = useSelector((state: RootState) => state.auth.access_token);
+  const user = useSelector((state: RootState) => state.user.user);
 
   useEffect(() => {
     if (token) {
@@ -30,11 +33,13 @@ const ProtectRoute = ({ children }: HTMLProps<HTMLDivElement>) => {
       if (!response.isFetching) {
         setIsLoading(false);
         if (location.pathname.includes("sign")) {
-          navigate("/");
+          if (response.data.role === "SELLER") {
+            navigate("/");
+          } else {
+            navigate("/order/companies");
+          }
         }
       }
-    } else {
-      navigate("/signin");
     }
 
     if (response.isError) {
@@ -46,7 +51,15 @@ const ProtectRoute = ({ children }: HTMLProps<HTMLDivElement>) => {
     return <ScreenLoader />;
   }
 
-  return <>{children}</>;
+  return (
+    <>
+      {user?.role === "SELLER" ? (
+        <ProtectSeller>{children}</ProtectSeller>
+      ) : (
+        <ProtectCustomer>{children}</ProtectCustomer>
+      )}
+    </>
+  );
 };
 
 export default ProtectRoute;

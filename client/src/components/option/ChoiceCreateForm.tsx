@@ -138,6 +138,7 @@ export const ChoiceCreateForm = ({ onClose, option_id }: PropType) => {
 
             <div className="pt-[10px]">
               <BtnPrimary
+                disabled={!createChoice.length}
                 onClick={() => handleCreate()}
                 width={"full"}
                 isLoading={response.isLoading}

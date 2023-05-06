@@ -5,11 +5,7 @@ import { OptionCheckBox, OptionRadioBox } from "../components/option";
 import { Category_Menu_Items, Choice } from "../types";
 import { addToCart, editCart } from "../store/slice/CustomerOrder";
 import { BtnPrimary } from "../components/form";
-import {
-  AiOutlineArrowLeft,
-  AiOutlineMinus,
-  AiOutlinePlus,
-} from "react-icons/ai";
+import { AiOutlineMinus, AiOutlinePlus } from "react-icons/ai";
 import { useQuery } from "../helper";
 import { ScreenLoader } from "../components/loader";
 import { useNavigate } from "react-router-dom";
@@ -17,7 +13,11 @@ import { BsX } from "react-icons/bs";
 
 export const OrderMenu = () => {
   const [isExist, setIsExist] = useState(false);
+  const [options, setOptions] = useState<
+    { option_id: number; min: number; max: number }[] | null
+  >(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [isDisable, setIsDisable] = useState(true);
   const [quantity, setQuantity] = useState(1);
   const [choices, setChoices] = useState<Choice[]>([]);
   const query = useQuery();
@@ -32,6 +32,39 @@ export const OrderMenu = () => {
   const [menu, setMenu] = useState<Category_Menu_Items>(
     {} as Category_Menu_Items
   );
+
+  useEffect(() => {
+    if (options !== null) {
+      const isAllTrue = options.map((op) => {
+        const filtered = choices.filter((i) => i.options_id == op.option_id);
+        return filtered.length >= op.min && filtered.length <= op.max;
+      });
+
+      if (isAllTrue.every((i) => !!i)) {
+        setIsDisable(false);
+      } else {
+        setIsDisable(true);
+      }
+    }
+  }, [choices]);
+
+  useEffect(() => {
+    if (menu.menu_items) {
+      const payload = menu.menu_items.options
+        .filter((o) => o.min == 0 && o.max == 0)
+        .map((i) => ({
+          option_id: i.id,
+          min: i.min,
+          max: i.max,
+        }));
+
+      setOptions(payload);
+
+      if (!payload.length || payload.every((i) => i.min == 0)) {
+        setIsDisable(false);
+      }
+    }
+  }, [menu]);
 
   useEffect(() => {
     if (menu_id) {
@@ -185,6 +218,7 @@ export const OrderMenu = () => {
         <BtnPrimary
           className="text-white w-full mt-[20px] fixed bottom-0 left-0 py-[20px]"
           onClick={() => menuAddToCart()}
+          disabled={isDisable}
         >
           {isExist ? "Update cart" : "Add to cart"}
         </BtnPrimary>

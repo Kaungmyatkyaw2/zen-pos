@@ -28,19 +28,21 @@ export const ChoiceRow = ({ choice }: PropType) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
+    setShowChoice(choice);
+  }, [choice]);
+
+  useEffect(() => {
     if (dropResponse.isSuccess) {
-      dispatch(
-        storeOptions(
-          options.map((i) =>
-            i.id === choice.options_id
-              ? {
-                  ...i,
-                  choices: i.choices.filter((c) => c.id !== choice.id),
-                }
-              : i
-          )
-        )
+      const payload = options.map((i) =>
+        i.id === choice.options_id
+          ? {
+              ...i,
+              choices: i.choices.filter((c) => c.id !== choice.id),
+            }
+          : i
       );
+
+      dispatch(storeOptions(payload));
       toast.success("Successfully deleted");
     } else {
       if (dropResponse.isError) {
