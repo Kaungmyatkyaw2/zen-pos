@@ -10,6 +10,7 @@ import { RootState } from "../store/store";
 import { CompanyCard } from "../components/company";
 import { Company } from "../types";
 import { useNavigate } from "react-router-dom";
+import { OrderPageHeader } from "../components/order/OrderPageHeader";
 
 export const Companies = () => {
   const [getCompanies, response] = useLazyGetCompaniesQuery();
@@ -21,6 +22,7 @@ export const Companies = () => {
   const companies = useSelector(
     (state: RootState) => state.customerOrder.companies
   );
+  const user = useSelector((state: RootState) => state.user.user);
 
   useEffect(() => {
     setShowCompanies(companies);
@@ -54,10 +56,8 @@ export const Companies = () => {
     <ScreenLoader />
   ) : (
     <>
+      <OrderPageHeader />
       <div className="p-[2rem]">
-        <h1 className="text-[25px] font-bold text-center">
-          Welcome To Zen App
-        </h1>
         <div className="flex items-center h-[43px] bg-softestdark pl-[20px] rounded-[5px] mt-[20px]">
           <BsSearch />
           <InputField

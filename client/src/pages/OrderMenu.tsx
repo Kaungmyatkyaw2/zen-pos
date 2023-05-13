@@ -34,6 +34,24 @@ export const OrderMenu = () => {
   );
 
   useEffect(() => {
+    if (menu.menu_items) {
+      const payload = menu.menu_items?.options
+        ?.filter((o) => !(o.min === 0 && o.max === 0))
+        ?.map((i) => ({
+          option_id: i.id,
+          min: i.min,
+          max: i.max,
+        }));
+
+      setOptions(payload);
+
+      if (!payload?.length || payload?.every((i) => i.min == 0)) {
+        setIsDisable(false);
+      }
+    }
+  }, [menu]);
+
+  useEffect(() => {
     if (options !== null) {
       const isAllTrue = options.map((op) => {
         const filtered = choices.filter((i) => i.options_id == op.option_id);
@@ -46,25 +64,7 @@ export const OrderMenu = () => {
         setIsDisable(true);
       }
     }
-  }, [choices]);
-
-  useEffect(() => {
-    if (menu.menu_items) {
-      const payload = menu.menu_items.options
-        .filter((o) => o.min == 0 && o.max == 0)
-        .map((i) => ({
-          option_id: i.id,
-          min: i.min,
-          max: i.max,
-        }));
-
-      setOptions(payload);
-
-      if (!payload.length || payload.every((i) => i.min == 0)) {
-        setIsDisable(false);
-      }
-    }
-  }, [menu]);
+  }, [choices, options]);
 
   useEffect(() => {
     if (menu_id) {

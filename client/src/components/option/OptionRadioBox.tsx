@@ -17,15 +17,19 @@ export const OptionRadioBox = ({
   addChoice,
   chosenChoice,
 }: PropType) => {
-
   return (
     <FormControl>
-      <FormLabel
-        id="demo-radio-buttons-group-label"
-        style={{ color: "#d1d5dbd9", fontWeight: "bold", fontSize: "17px" }}
-      >
-        {option.name}
-      </FormLabel>
+      <div className="flex items-center justify-between">
+        <FormLabel id="demo-radio-buttons-group-label">
+          <p className="text-[17px] fontbold text-[#d1d5dbd9]">{option.name}</p>
+          <p className="text-[12px] py-[2px] text-white">
+            Select {option.min} choices
+          </p>
+        </FormLabel>
+        <h1 className="bg-white text-black rounded-full px-[15px] py-[3px]">
+          Require
+        </h1>
+      </div>
       <RadioGroup
         aria-labelledby="demo-radio-buttons-group-label"
         defaultValue="female"

@@ -4,6 +4,7 @@ import { NavLink } from "react-router-dom";
 import { InputField, BtnPrimary } from "../components/form";
 import { useSigninMutation } from "../store/service/auth-endpoints/Auth.endpoints";
 import { login } from "../store/slice/Auth.slice";
+import { toast } from "react-hot-toast";
 
 export const Signin = () => {
   const [signin, response] = useSigninMutation();
@@ -17,6 +18,10 @@ export const Signin = () => {
   useEffect(() => {
     if (response.isSuccess) {
       dispatch(login(response.data.access_token));
+    } else if (response.isError) {
+      // @ts-ignore
+      const error: string = response.error.data.message;
+      toast.error(error);
     }
   }, [response]);
 

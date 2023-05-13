@@ -65,7 +65,7 @@ export class AuthService {
     if (!user) {
       throw new ForbiddenException("User Doesn't Exist");
     }
-    const match_password = argon.verify(user.hash, dto.password);
+    const match_password = await argon.verify(user.hash, dto.password);
 
     if (!match_password) {
       throw new ForbiddenException('Password Incorrect');

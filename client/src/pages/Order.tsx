@@ -6,10 +6,11 @@ import { TabContext, TabList } from "@mui/lab";
 import { ScreenLoader } from "../components/loader";
 import { useQuery } from "../helper";
 import { useLazyGetCompanyQuery } from "../store/service/company-endpoints/Company.endpoints";
-import { storeInfo } from "../store/slice/CustomerOrder";
+import { emptyCart, storeInfo } from "../store/slice/CustomerOrder";
 import { RootState } from "../store/store";
 import { Cart, OrderBanner, OrderTabPanel } from "../components/order";
-import { Outlet } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
+import { AiFillHome } from "react-icons/ai";
 
 export const Order = () => {
   const [getCompany, response] = useLazyGetCompanyQuery();
@@ -22,6 +23,7 @@ export const Order = () => {
   const categories = useSelector(
     (state: RootState) => state.customerOrder.categories
   );
+  const navigate = useNavigate();
   const cart = useSelector((state: RootState) => state.customerOrder.cart);
   const query = useQuery();
   const company_id = query.get("company_id");
@@ -93,6 +95,15 @@ export const Order = () => {
             <Badge color="primary" badgeContent={cart.length} showZero>
               <LocalMallIcon />
             </Badge>
+          </button>
+          <button
+            className="fixed top-[30px] left-[30px] w-[40px] h-[40px] bg-softestdark rounded-full flex justify-center items-center"
+            onClick={() => {
+              dispatch(emptyCart([]));
+              navigate("/order/companies");
+            }}
+          >
+            <AiFillHome />
           </button>
         </div>
       </div>
