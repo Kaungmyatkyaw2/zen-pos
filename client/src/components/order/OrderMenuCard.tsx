@@ -44,7 +44,7 @@ export const OrderMenuCard = ({ menu, ...rest }: PropType) => {
   return (
     <>
       <div
-        className={`w-[150px] ${rest.className} ${
+        className={`w-[170px] shadow-lg border border-black px-[10px] ${rest.className} ${
           menu.isAvailable ? "" : "opacity-50"
         } ${isExist && "border border-primary"}`}
         onClick={() =>
@@ -79,7 +79,8 @@ export const OrderMenuCard = ({ menu, ...rest }: PropType) => {
             </p>
             {menu.menu_items.discount > 0 ? (
               <p className={`text-primary font-medium `}>
-                {(menu.menu_items.price / 100) * menu.menu_items.discount}
+                {menu.menu_items.price -
+                  (menu.menu_items.price / 100) * menu.menu_items.discount}
                 <span className="text-[13px]">{currency || ""}</span>
               </p>
             ) : (

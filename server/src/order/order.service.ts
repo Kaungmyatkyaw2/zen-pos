@@ -51,7 +51,7 @@ export class OrderService {
       (total, i) =>
         total +
         i.quantity *
-          ((i.menu.menu_items.price / 100) * i.menu.menu_items.discount),
+          (i.menu.menu_items.price - ((i.menu.menu_items.price / 100) * i.menu.menu_items.discount)),
       0,
     );
 

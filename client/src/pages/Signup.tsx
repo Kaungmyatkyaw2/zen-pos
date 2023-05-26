@@ -31,7 +31,7 @@ export const Signup = () => {
   });
 
   const handleSignup = (values: any) => {
-    signup({ ...values, isSeller: true });
+    signup({ ...values, isSeller: false });
   };
 
   return (

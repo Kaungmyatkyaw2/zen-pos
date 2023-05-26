@@ -18,12 +18,9 @@ export const CompanyCard = ({ company, className, ...rest }: Prop) => {
         alt=""
       />
       <div className="w-full flex flex-col justify-center px-[20px] space-y-[5px]">
-        <h1 className="font-medium">
-          {company.name}
-          {/* <span> (Qty - {cartMenu.quantity})</span> */}
-        </h1>
+        <h1 className="font-medium">{company.name}</h1>
         <h1 className="text-[12px] text-gray-400"></h1>
-        <p className="text-[14px] text-gray-400">Some Description</p>
+        <p className="text-[14px] text-gray-400"> Some Description</p>
       </div>
     </div>
   );

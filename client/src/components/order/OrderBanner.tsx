@@ -10,7 +10,7 @@ export const OrderBanner = ({ ...rest }: HTMLProps<HTMLDivElement>) => {
       />
       <div className=" px-[10px] py-[20px] sm:w-[500px] w-[90%] bg-softestdark rounded-[10px] absolute bottom-0 left-[50%] -translate-x-[50%] translate-y-[50%]">
         <h1 className="font-bold text-white text-[25px]">{rest.children}</h1>
-        <p className="text-gray-400 pt-[10px]">Some Description....</p>
+        <p className="text-gray-400 pt-[10px]">{rest.children}'s Shop</p>
       </div>
     </div>
   );

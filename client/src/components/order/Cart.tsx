@@ -87,7 +87,7 @@ export const Cart = ({ isOpen, onClose }: PropType) => {
           )}
         </div>
         <BtnPrimary
-          disabled={response.isLoading}
+          disabled={response.isLoading || !cart.length}
           isLoading={response.isLoading}
           onClick={handleCreateOrder}
           width={"full"}
