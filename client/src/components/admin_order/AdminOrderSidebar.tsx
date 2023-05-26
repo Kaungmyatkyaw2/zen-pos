@@ -65,7 +65,7 @@ export const AdminOrderSidebar = () => {
         </div>
         <div className="flex flex-col items-end">
           <p className="text-sm text-gray-400">Customer</p>
-          <h1 className="font-bold">Kaung Myat Kyaw</h1>
+          <h1 className="font-bold">{activeOrder?.customer.name}</h1>
         </div>
       </div>
       <div className="pt-[30px] space-y-[30px] h-[88%] overflow-scroll scrollbar-hide pb-[50px]">

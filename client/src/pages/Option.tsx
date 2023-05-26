@@ -45,7 +45,7 @@ export const Option = () => {
     <LayoutProvider>
       {isLoading ? (
         <MediumLoader />
-      ) : (
+      ) : options.length ? (
         <>
           <BtnPrimary
             className="shadow-custom"
@@ -101,6 +101,22 @@ export const Option = () => {
             <OptionCreateForm onClose={() => setShowCreateForm(false)} />
           )}
         </>
+      ) : (
+        <div className="w-full h-[80vh] flex flex-col justify-center items-center">
+          <h1 className="text-center text-[30px] font-semibold py-[20px]">
+            Create Your First Option !
+          </h1>
+          <BtnPrimary
+            className="shadow-custom"
+            onClick={() => setShowCreateForm(true)}
+          >
+            <span className="pr-[10px]">Create Option</span> <AiOutlinePlus />
+          </BtnPrimary>
+        </div>
+      )}
+
+      {showCreateForm && (
+        <OptionCreateForm onClose={() => setShowCreateForm(false)} />
       )}
     </LayoutProvider>
   );

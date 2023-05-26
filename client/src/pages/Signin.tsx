@@ -5,14 +5,11 @@ import { InputField, BtnPrimary } from "../components/form";
 import { useSigninMutation } from "../store/service/auth-endpoints/Auth.endpoints";
 import { login } from "../store/slice/Auth.slice";
 import { toast } from "react-hot-toast";
+import { useFormik } from "formik";
+import { signInValidate } from "../formik";
 
 export const Signin = () => {
   const [signin, response] = useSigninMutation();
-  const [formData, setFormData] = useState({
-    email: "",
-    password: "",
-    isSeller: true,
-  });
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -20,43 +17,52 @@ export const Signin = () => {
       dispatch(login(response.data.access_token));
     } else if (response.isError) {
       // @ts-ignore
-      const error: string = response.error.data.message;
-      toast.error(error);
+      toast.error("An error Occured");
     }
   }, [response]);
 
-  const handleSignin = (e: React.SyntheticEvent) => {
-    e.preventDefault();
-    signin(formData);
+  const formik = useFormik({
+    initialValues: {
+      email: "",
+      password: "",
+    },
+    validate: signInValidate,
+    onSubmit: (values) => {
+      handleSignin(values);
+    },
+  });
+
+  const handleSignin = (payload: any) => {
+    signin({ ...payload, isSeller: true });
   };
 
   return (
     <div className="w-full h-[100vh] flex justify-center items-center">
       <div className="w-[300px]">
         <h1 className="text-[30px] font-bold mb-[20px]">Sign in</h1>
-        <form
-          onSubmit={(e) => handleSignin(e)}
-          className="w-full space-y-[15px]"
-        >
+        <form onSubmit={formik.handleSubmit} className="w-full space-y-[15px]">
           <InputField
-            name="email"
             label="Email"
             placeholder="example@gmail.com"
-            onChange={(e) =>
-              setFormData({ ...formData, email: e.currentTarget.value })
-            }
+            error={formik.errors.email}
+            isTouched={formik.touched.email}
+            {...formik.getFieldProps("email")}
           />
           <InputField
-            name="password"
             label="Password"
             placeholder="example password"
-            onChange={(e) =>
-              setFormData({ ...formData, password: e.currentTarget.value })
-            }
+            error={formik.errors.password}
+            isTouched={formik.touched.password}
+            type="password"
+            {...formik.getFieldProps("password")}
           />
           <div className="pt-[10px]">
             <BtnPrimary
-              disabled={!formData.email.length || formData.password.length < 6}
+              disabled={
+                !formik.values.email.length ||
+                response.isLoading ||
+                !formik.isValid
+              }
               width={"full"}
               isLoading={response.isLoading}
             >

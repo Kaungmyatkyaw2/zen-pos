@@ -18,7 +18,7 @@ export const BtnPrimary = ({ isLoading, ...rest }: propTpye) => {
           width ? "w-" + width : "px-[20px]"
         } rounded-[4px] text-[15px] font-medium flex justify-center items-center ${
           rest.className
-        } disabled:opacity-60`}
+        } disabled:opacity-60 disabled:cursor-not-allowed`}
         onClick={rest.onClick}
       >
         {isLoading ? (

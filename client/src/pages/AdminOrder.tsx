@@ -14,6 +14,9 @@ export const AdminOrder = () => {
   const [isLoading, setIsLoading] = useState(true);
   const dispatch = useDispatch();
   const orders = useSelector((state: RootState) => state.adminOrder.orders);
+  const activeOrder = useSelector(
+    (state: RootState) => state.adminOrder.activeOrder
+  );
 
   useEffect(() => {
     getOrders("");
@@ -36,7 +39,11 @@ export const AdminOrder = () => {
         <MediumLoader />
       ) : (
         <div className="w-full mx flex justify-between">
-          <div className="w-[calc(100%-450px)] h-[85vh] bg-dark p-[20px] rounded-[10px]">
+          <div
+            className={`${
+              activeOrder ? "w-[calc(100%-450px)]" : "w-full"
+            } h-[85vh] bg-dark p-[20px] rounded-[10px]`}
+          >
             <div className="w-full flex justify-between items-center">
               <h1 className="text-[25px] font-bold">Your Orders</h1>
               <button className="flex items-center py-[7px] px-[10px] rounded-[5px] border border-softestdark space-x-[10px]">
@@ -45,11 +52,19 @@ export const AdminOrder = () => {
               </button>
             </div>
 
-            {orders.map((order) => (
-              <AdminOrderRow order={order} key={order.id} />
-            ))}
+            {orders.length ? (
+              orders.map((order) => (
+                <AdminOrderRow order={order} key={order.id} />
+              ))
+            ) : (
+              <div className="w-full flex items-center justify-center">
+                <h1 className="text-center text-[30px] font-semibold py-[20px]">
+                  No Order Exist
+                </h1>
+              </div>
+            )}
           </div>
-          <AdminOrderSidebar />
+          {activeOrder ? <AdminOrderSidebar /> : <></>}
         </div>
       )}
     </LayoutProvider>
