@@ -9,11 +9,13 @@ import { toast } from "react-hot-toast";
 import { MediumLoader } from "../components/loader";
 import { AdminOrderRow, AdminOrderSidebar } from "../components/admin_order";
 
+
 export const AdminOrder = () => {
   const [getOrders, response] = useLazyGetOrdersQuery();
   const [isLoading, setIsLoading] = useState(true);
   const dispatch = useDispatch();
   const orders = useSelector((state: RootState) => state.adminOrder.orders);
+  const company = useSelector((state: RootState) => state.user.company);
   const activeOrder = useSelector(
     (state: RootState) => state.adminOrder.activeOrder
   );

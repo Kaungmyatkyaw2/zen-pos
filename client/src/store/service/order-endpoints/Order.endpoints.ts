@@ -31,6 +31,13 @@ const OrderEndpoints = RootApi.injectEndpoints({
         method: "PATCH",
       }),
     }),
+    updateOrderIsPaid: builder.mutation({
+      query: ({ id, data }) => ({
+        url: `/order/updateOrderIsPaid?id=${id}`,
+        body: data,
+        method: "PATCH",
+      }),
+    }),
   }),
 });
 
@@ -39,4 +46,5 @@ export const {
   useLazyGetOrdersQuery,
   useUpdateOrderStatusMutation,
   useLazyGetOrderQuery,
+  useUpdateOrderIsPaidMutation,
 } = OrderEndpoints;

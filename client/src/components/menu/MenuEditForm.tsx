@@ -10,6 +10,8 @@ import { Category, Category_Menu_Items, Option } from "../../types";
 import DropZone from "react-dropzone";
 import { CategoryAutoComplete } from "../category";
 import { OptionAutoComplete } from "../option";
+import { useFormik } from "formik";
+import { createMenuItemValidate } from "../../formik";
 
 interface PropType {
   onClose: () => void;
@@ -67,9 +69,23 @@ export const MenuEditForm = ({ onClose, menu }: PropType) => {
     }
   }, [response]);
 
-  const handleCreate = (e: React.SyntheticEvent) => {
-    e.preventDefault();
-    const formData = new FormData(form.current);
+  const formik = useFormik({
+    initialValues: {
+      name: menu.menu_items.name,
+      price: "" + menu.menu_items.price,
+    },
+    validate: createMenuItemValidate,
+    onSubmit: (values) => {
+      handleCreate(values);
+    },
+  });
+
+  const handleCreate = (obj: {}) => {
+    const formData = new FormData();
+
+    Object.entries(obj).forEach(([key, value]) => {
+      formData.append(key, "" + value);
+    });
 
     formData.append(
       "categoryId",
@@ -177,39 +193,43 @@ export const MenuEditForm = ({ onClose, menu }: PropType) => {
         </DropZone>
         <form
           ref={form}
-          onSubmit={handleCreate}
+          onSubmit={formik.handleSubmit}
           className="w-full space-y-[15px] pt-[20px]"
         >
           <InputField
-            name="name"
             label="Menu Item Name"
             placeholder="example name"
+            error={formik.errors.name}
+            isTouched={formik.touched.name}
+            {...formik.getFieldProps("name")}
             defaultValue={menu.menu_items.name}
           />
           <div className="flex space-x-[10px]">
             <InputField
-              name="price"
               label="Price"
               type="number"
               placeholder="price"
               defaultValue={menu.menu_items.price}
+              error={formik.errors.price}
+              isTouched={formik.touched.price}
+              {...formik.getFieldProps("price")}
             />
             <InputField
-              name="discount"
               label="Discount (%)"
               type="number"
               placeholder="discount"
               defaultValue={menu.menu_items.discount}
+              {...formik.getFieldProps("discount")}
             />
           </div>
 
           <TextArea
             height={"h-[100px]"}
-            name="description"
             label="Description"
             type="text"
             placeholder="describe the menu item"
             defaultValue={menu.menu_items.description || ""}
+            {...formik.getFieldProps("description")}
           />
 
           <CategoryAutoComplete
@@ -233,7 +253,9 @@ export const MenuEditForm = ({ onClose, menu }: PropType) => {
           />
           <div className="">
             <BtnPrimary
-              disabled={response.isLoading}
+              disabled={
+                response.isLoading || !formik.isValid || !formik.values.name
+              }
               width={"full"}
               isLoading={response.isLoading}
             >

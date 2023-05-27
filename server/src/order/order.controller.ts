@@ -41,4 +41,12 @@ export class OrderController {
   ) {
     return this.orderService.updateOrderStatus(id, dto);
   }
+
+  @Patch('updateOrderIsPaid?')
+  updateOrderIsPaid(
+    @Query('id', ParseIntPipe) id: number,
+    @Body() dto: { isPaid: boolean },
+  ) {
+    return this.orderService.updateOrderIsPaid(id, dto);
+  }
 }

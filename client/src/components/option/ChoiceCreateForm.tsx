@@ -17,12 +17,12 @@ export const ChoiceCreateForm = ({ onClose, option_id }: PropType) => {
   const [create, response] = useCreateChoicesMutation();
   const [choice, setChoice] = useState({
     name: "",
-    price: 0,
+    price: "",
   });
   const [createChoice, setCreateChoice] = useState<
     {
       name: string;
-      price: number;
+      price: string;
       id: number;
     }[]
   >([]);
@@ -52,7 +52,7 @@ export const ChoiceCreateForm = ({ onClose, option_id }: PropType) => {
   const handleCreate = () => {
     const payload = {
       id: option_id,
-      data: createChoice.map((i) => ({ name: i.name, price: i.price })),
+      data: createChoice.map((i) => ({ name: i.name, price: +i.price })),
     };
 
     create(payload);
@@ -91,13 +91,13 @@ export const ChoiceCreateForm = ({ onClose, option_id }: PropType) => {
                   onChange={(e) =>
                     setChoice({
                       ...choice,
-                      price: e.currentTarget.valueAsNumber,
+                      price: e.currentTarget.value,
                     })
                   }
                 />
                 <BtnPrimary
                   type="button"
-                  disabled={!choice.name.length || choice.price === undefined}
+                  disabled={!choice.name.length || !choice.price.length}
                   onClick={() => {
                     setCreateChoice([
                       ...createChoice,
@@ -105,7 +105,7 @@ export const ChoiceCreateForm = ({ onClose, option_id }: PropType) => {
                     ]);
                     setChoice({
                       name: "",
-                      price: 0,
+                      price: "",
                     });
                   }}
                 >

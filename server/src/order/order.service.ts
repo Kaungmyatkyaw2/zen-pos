@@ -107,4 +107,17 @@ export class OrderService {
 
     return updatedOrderlines;
   }
+
+  async updateOrderIsPaid(id: number, dto: { isPaid: boolean }) {
+    const updatedOrderlines = await this.prisma.orders.update({
+      where: {
+        id: +id,
+      },
+      data: {
+        isPaid: dto.isPaid,
+      },
+    });
+
+    return updatedOrderlines;
+  }
 }

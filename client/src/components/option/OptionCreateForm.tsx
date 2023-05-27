@@ -22,12 +22,12 @@ export const OptionCreateForm = ({ onClose }: PropType) => {
   });
   const [choice, setChoice] = useState({
     name: "",
-    price: 0,
+    price: "",
   });
   const [createChoice, setCreateChoice] = useState<
     {
       name: string;
-      price: number;
+      price: string;
       id: number;
     }[]
   >([]);
@@ -58,7 +58,7 @@ export const OptionCreateForm = ({ onClose }: PropType) => {
 
     const payload = {
       ...formData,
-      choices: createChoice.map((i) => ({ name: i.name, price: i.price })),
+      choices: createChoice.map((i) => ({ name: i.name, price: +i.price })),
     };
 
     create(payload);
@@ -66,7 +66,7 @@ export const OptionCreateForm = ({ onClose }: PropType) => {
 
   return (
     <>
-      <div className="z-[10] bg-dark bg-opacity-95 fixed top-0 left-0 w-full h-[100vh] flex justify-center items-center">
+      <div className="z-[10] bg-dark bg-opacity-95 fixed top-0 left-0 w-full h-[100vh] overflow-y-scroll flex justify-center items-center">
         <button
           onClick={onClose}
           disabled={response.isLoading}
@@ -133,6 +133,7 @@ export const OptionCreateForm = ({ onClose }: PropType) => {
                   label="Choice Name"
                   type="text"
                   placeholder="example name"
+                  value={choice.name}
                   onChange={(e) =>
                     setChoice({ ...choice, name: e.currentTarget.value })
                   }
@@ -141,22 +142,27 @@ export const OptionCreateForm = ({ onClose }: PropType) => {
                   label="Price"
                   type="number"
                   placeholder="Price"
+                  value={choice.price}
                   onChange={(e) =>
                     setChoice({
                       ...choice,
-                      price: e.currentTarget.valueAsNumber,
+                      price: e.currentTarget.value,
                     })
                   }
                 />
                 <BtnPrimary
                   type="button"
-                  disabled={!choice.name.length || choice.price === undefined}
-                  onClick={() =>
+                  disabled={!choice.name.length || !choice.price.length}
+                  onClick={() => {
                     setCreateChoice([
                       ...createChoice,
                       { ...choice, id: Date.now() },
-                    ])
-                  }
+                    ]);
+                    setChoice({
+                      price: "",
+                      name: "",
+                    });
+                  }}
                 >
                   <AiOutlinePlus />
                 </BtnPrimary>

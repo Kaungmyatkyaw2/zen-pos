@@ -50,6 +50,10 @@ const AdminOrder = createSlice({
   },
 });
 
-export const { storeOrders, storeActiveOrder, updateActiveOrder,updateOrderlineStatus } =
-  AdminOrder.actions;
+export const {
+  storeOrders,
+  storeActiveOrder,
+  updateActiveOrder,
+  updateOrderlineStatus,
+} = AdminOrder.actions;
 export default AdminOrder.reducer;

@@ -183,7 +183,11 @@ export const ChoiceRow = ({ choice }: PropType) => {
         <div className="w-[25%]">
           <div className="space-x-[20px]">
             <button
-              disabled={dropResponse.isLoading || updateResponse.isLoading}
+              disabled={
+                dropResponse.isLoading ||
+                updateResponse.isLoading ||
+                !showChoice.name.length
+              }
               onClick={() => {
                 if (isEdit) {
                   handleUpdate();
