@@ -60,7 +60,7 @@ export const AdminOrderRow = ({ order }: Props) => {
         </div>
         <div className="pt-[10px] flex justify-between items-center">
           <div>
-            <p className="text-[14px]">Name : Kaung Myat Kyaw</p>
+            <p className="text-[14px]">Name : {order.customer.name}</p>
             <p className="text-[13px] text-gray-400">
               Qty - {order.order_lines.length}
             </p>

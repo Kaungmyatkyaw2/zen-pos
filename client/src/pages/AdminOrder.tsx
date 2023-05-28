@@ -8,17 +8,38 @@ import { storeActiveOrder, storeOrders } from "../store/slice/AdminOrder.slice";
 import { toast } from "react-hot-toast";
 import { MediumLoader } from "../components/loader";
 import { AdminOrderRow, AdminOrderSidebar } from "../components/admin_order";
+import { Order } from "../types";
+import { Button, Menu, MenuItem } from "@mui/material";
 
+type filterText = "all" | "pending" | "complete" | "preparing";
 
 export const AdminOrder = () => {
   const [getOrders, response] = useLazyGetOrdersQuery();
   const [isLoading, setIsLoading] = useState(true);
+  const [filterBox, setFilterBox] = React.useState<null | HTMLElement>(null);
+  const [filter, setFilter] = useState<filterText>("preparing");
+  const [showOrder, setShowOrder] = useState<Order[]>([]);
   const dispatch = useDispatch();
   const orders = useSelector((state: RootState) => state.adminOrder.orders);
-  const company = useSelector((state: RootState) => state.user.company);
   const activeOrder = useSelector(
     (state: RootState) => state.adminOrder.activeOrder
   );
+  const filterOpen = Boolean(filterBox);
+
+  const handleClick = (event: React.MouseEvent<HTMLElement>) => {
+    setFilterBox(event.currentTarget);
+  };
+  const handleClose = (value: filterText) => {
+    setFilterBox(null);
+    setFilter(value);
+  };
+
+  useEffect(() => {
+    if (orders) {
+      const show = filterOrder(filter);
+      setShowOrder(show);
+    }
+  }, [filter, orders]);
 
   useEffect(() => {
     getOrders("");
@@ -35,6 +56,25 @@ export const AdminOrder = () => {
     }
   }, [response]);
 
+  const filterOrder = (toFilter: filterText): Order[] => {
+    let payload: Order[] = [];
+
+    if (toFilter == "all") {
+      return orders;
+    }
+
+    if (toFilter == "complete") {
+      return orders.filter((i) =>
+        i.order_lines.every((ol) => ol.status === "COMPLETE")
+      );
+    } else {
+      console.log("first");
+      return orders.filter((i) =>
+        i.order_lines.some((ol) => ol.status === toFilter.toLocaleUpperCase())
+      );
+    }
+  };
+
   return (
     <LayoutProvider>
       {isLoading ? (
@@ -48,14 +88,51 @@ export const AdminOrder = () => {
           >
             <div className="w-full flex justify-between items-center">
               <h1 className="text-[25px] font-bold">Your Orders</h1>
-              <button className="flex items-center py-[7px] px-[10px] rounded-[5px] border border-softestdark space-x-[10px]">
-                <IoOptionsSharp className="text-[20px]" />
-                <span className="text-[14px]">Filter Orders</span>
-              </button>
+              <div>
+                <Button
+                  id="demo-positioned-button"
+                  aria-controls={
+                    filterOpen ? "demo-positioned-menu" : undefined
+                  }
+                  aria-haspopup="true"
+                  aria-expanded={filterOpen ? "true" : undefined}
+                  onClick={handleClick}
+                  className="flex items-center py-[7px] px-[10px] rounded-[5px] border border-softestdark space-x-[10px]"
+                >
+                  <IoOptionsSharp className="text-[20px]" />
+                  <span className="text-[14px] capitalize">{filter}</span>
+                </Button>
+                <Menu
+                  id="demo-positioned-menu"
+                  aria-labelledby="demo-positioned-button"
+                  open={filterOpen}
+                  onClose={() => handleClose(filter)}
+                  anchorEl={filterBox}
+                  anchorOrigin={{
+                    vertical: "top",
+                    horizontal: "left",
+                  }}
+                  transformOrigin={{
+                    vertical: "top",
+                    horizontal: "left",
+                  }}
+                >
+                  <MenuItem onClick={() => handleClose("all")}>All</MenuItem>
+                  <MenuItem onClick={() => handleClose("pending")}>
+                    Pending
+                  </MenuItem>
+                  <MenuItem onClick={() => handleClose("preparing")}>
+                    Preparing
+                  </MenuItem>
+                  <MenuItem onClick={() => handleClose("complete")}>
+                    Complete
+                  </MenuItem>
+                </Menu>
+              </div>
             </div>
 
-            {orders.length ? (
-              orders.map((order) => (
+            {showOrder.length ? (
+              showOrder.map((order) => (
                 <AdminOrderRow order={order} key={order.id} />
               ))
             ) : (

@@ -38,7 +38,7 @@ export const AdminOrderBill = ({ order, setOpen, open }: Prop) => {
 
   useEffect(() => {
     if (updateIsPaidRes.isSuccess) {
-      dispatch(updateActiveOrder({ ...order, isPaid: !order.isPaid }));
+      dispatch(updateActiveOrder({ ...order, isPaid: true }));
       setOpen(false);
     }
   }, [updateIsPaidRes]);
@@ -46,7 +46,7 @@ export const AdminOrderBill = ({ order, setOpen, open }: Prop) => {
   const handlePrint = useReactToPrint({
     content: () => billRef.current,
     onAfterPrint: () => {
-      updateOrderIsPaid({ id: order.id, isPaid: true });
+      updateOrderIsPaid({ id: order.id, data: { isPaid: true } });
     },
   });
 
@@ -134,7 +134,7 @@ export const AdminOrderBill = ({ order, setOpen, open }: Prop) => {
         </div>
         <div className="w-full flex justify-evenly pt-[20px]">
           <BtnPrimary
-            onClick={handlePrint}
+            onClick={() => handlePrint()}
             className="w-[45%] text-white"
             isLoading={updateIsPaidRes.isLoading}
             disabled={updateIsPaidRes.isLoading || order?.isPaid}
