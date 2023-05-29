@@ -6,8 +6,14 @@ import { BtnPrimary } from "../form";
 import { useUpdateOrderStatusMutation } from "../../store/service/order-endpoints/Order.endpoints";
 import { updateActiveOrder } from "../../store/slice/AdminOrder.slice";
 import { AdminOrderBill } from "./AdminOrderBill";
+import { BsX } from "react-icons/bs";
 
-export const AdminOrderSidebar = () => {
+interface Prop {
+  open: boolean;
+  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+export const AdminOrderSidebar = ({ open, setOpen }: Prop) => {
   const activeOrder = useSelector(
     (state: RootState) => state.adminOrder.activeOrder
   );
@@ -59,8 +65,23 @@ export const AdminOrderSidebar = () => {
   };
 
   return (
-    <>
-      <div className="w-[400px] h-[85vh] bg-softestdark rounded-[10px] p-[20px] relative">
+    <div
+      className={`md:w-fit md:h-fit md:static w-full h-[100vh] fixed top-0 right-0 
+    ${
+      open ? "right-0" : "right-[-100%]"
+    } flex justify-center items-center md:z-40 z-[9999999] md:bg-transparent bg-black bg-opacity-50
+    `}
+    >
+      <button
+        onClick={() => setOpen(false)}
+        disabled={response.isLoading}
+        className="bg-dark text-[40px] px-[20px] py-[10px] rounded-[10px] absolute top-0 right-0 md:hidden block"
+      >
+        <BsX />
+      </button>
+      <div
+        className={`w-[400px] h-[85vh] bg-softestdark rounded-[10px] p-[20px] relative right-0 `}
+      >
         <div className="flex justify-between items-center">
           <div>
             <p className="text-sm text-gray-400">Order id</p>
@@ -100,6 +121,6 @@ export const AdminOrderSidebar = () => {
       ) : (
         <></>
       )}
-    </>
+    </div>
   );
 };

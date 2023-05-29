@@ -14,11 +14,10 @@ export const MenuCard = ({ info, ...rest }: PropType) => {
   const [showDeletePopup, setShowDeletePopup] = useState(false);
   const [showEditForm, setShowEditForm] = useState(false);
 
-
   return (
     <>
       <div
-        className={`w-[220px] h-[270px] bg-dark rounded-[10px] space-y-[10px] text-white cursor-pointer py-[15px] px-[15px] shadow-sm ${
+        className={`w-[220px] h-[270px] bg-dark rounded-[10px] space-y-[10px] text-white cursor-pointer py-[15px] px-[15px] shadow-sm z-[1] ${
           rest.className
         } relative overflow-hidden group  ${
           !info.isAvailable && "border border-primary"

@@ -69,7 +69,7 @@ export const Setting = () => {
       {isLoading ? (
         <MediumLoader></MediumLoader>
       ) : (
-        <div className="w-full">
+        <div className="w-full md:pb-0 pb-[50px]">
           <div>
             <h1 className="text-[25px] font-bold">Edit The Company Info</h1>
             <p className="text-[16px] text-gray-200 pt-[10px]">
@@ -131,7 +131,7 @@ export const Setting = () => {
                 Submit
               </BtnPrimary>
             </form>
-            <div className=" flex w-[70%] justify-center">
+            <div className=" md:flex hidden md:w-[70%] justify-center">
               <img className="w-[400px]" src={setting} alt="" />
             </div>
           </div>

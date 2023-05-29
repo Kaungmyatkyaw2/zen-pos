@@ -20,7 +20,7 @@ export const CategoryCard = ({ category, ...rest }: PropType) => {
     <>
       <div
         {...rest}
-        className="w-[190px] h-[150px] rounded-[7px] bg-dark p-[10px] pt-[15px] pb-[20px] flex flex-col justify-between first-of-type:ml-0 ml-[30px] mt-[30px] relative"
+        className="w-[190px] h-[150px] rounded-[7px] bg-dark p-[10px] pt-[15px] pb-[20px] flex flex-col justify-between first-of-type:ml-0 sm:ml-[30px] mt-[30px] relative"
       >
         <div className="absolute top-0 right-0 p-[15px] space-x-[10px]">
           {category.id !== null ? (

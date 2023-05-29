@@ -48,7 +48,7 @@ export const Category = () => {
               <span className="pl-[5px]">Create Category</span>
             </BtnPrimary>
 
-            <div className="flex w-full">
+            <div className="flex flex-wrap sm:justify-start justify-evenly w-full">
               {categories.map((i, index) => (
                 <CategoryCard key={index} category={i} />
               ))}

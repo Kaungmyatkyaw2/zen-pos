@@ -10,6 +10,7 @@ import { MediumLoader } from "../components/loader";
 import { AdminOrderRow, AdminOrderSidebar } from "../components/admin_order";
 import { Order } from "../types";
 import { Button, Menu, MenuItem } from "@mui/material";
+import { AiOutlineEye } from "react-icons/ai";
 
 type filterText = "all" | "pending" | "complete" | "preparing";
 
@@ -17,8 +18,9 @@ export const AdminOrder = () => {
   const [getOrders, response] = useLazyGetOrdersQuery();
   const [isLoading, setIsLoading] = useState(true);
   const [filterBox, setFilterBox] = React.useState<null | HTMLElement>(null);
-  const [filter, setFilter] = useState<filterText>("preparing");
+  const [filter, setFilter] = useState<filterText>("all");
   const [showOrder, setShowOrder] = useState<Order[]>([]);
+  const [activeOrderBox, setActiveOrderBox] = useState(false);
   const dispatch = useDispatch();
   const orders = useSelector((state: RootState) => state.adminOrder.orders);
   const activeOrder = useSelector(
@@ -57,8 +59,6 @@ export const AdminOrder = () => {
   }, [response]);
 
   const filterOrder = (toFilter: filterText): Order[] => {
-    let payload: Order[] = [];
-
     if (toFilter == "all") {
       return orders;
     }
@@ -83,12 +83,12 @@ export const AdminOrder = () => {
         <div className="w-full mx flex justify-between">
           <div
             className={`${
-              activeOrder ? "w-[calc(100%-450px)]" : "w-full"
-            } h-[85vh] bg-dark p-[20px] rounded-[10px]`}
+              activeOrder ? "md:w-[calc(100%-450px)] w-full" : "w-full"
+            } min-h-[85vh] bg-dark p-[20px] rounded-[10px]`}
           >
             <div className="w-full flex justify-between items-center">
               <h1 className="text-[25px] font-bold">Your Orders</h1>
-              <div>
+              <div className="flex items-center space-x-[20px]">
                 <Button
                   id="demo-positioned-button"
                   aria-controls={
@@ -128,6 +128,15 @@ export const AdminOrder = () => {
                     Complete
                   </MenuItem>
                 </Menu>
+                <button
+                  className=" md:hidden flex items-center py-[7px] px-[10px] rounded-[5px] border border-softestdark space-x-[10px]"
+                  onClick={() => setActiveOrderBox(!activeOrderBox)}
+                >
+                  <AiOutlineEye className="text-[20px]" />
+                  <span className="text-[14px] capitalize">
+                    View Active Order
+                  </span>
+                </button>
               </div>
             </div>
 
@@ -143,7 +152,14 @@ export const AdminOrder = () => {
               </div>
             )}
           </div>
-          {activeOrder ? <AdminOrderSidebar /> : <></>}
+          {activeOrder ? (
+            <AdminOrderSidebar
+              setOpen={setActiveOrderBox}
+              open={activeOrderBox}
+            />
+          ) : (
+            <></>
+          )}
         </div>
       )}
     </LayoutProvider>

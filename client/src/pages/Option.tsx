@@ -3,7 +3,7 @@ import { LayoutProvider } from "../components/theme";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import Box from "@mui/material/Box";
-import { TableContainer } from "@mui/material";
+import { TableContainer, useMediaQuery } from "@mui/material";
 import { useLazyGetOptionsQuery } from "../store/service/option-endpoints/Options.endopoints";
 import { useDispatch, useSelector } from "react-redux";
 import { insertOption, storeOptions } from "../store/slice/Option.slice";
@@ -17,6 +17,7 @@ import { toast } from "react-hot-toast";
 
 export const Option = () => {
   const [isLoading, setIsLoading] = useState(true);
+  const isMediumScreen = useMediaQuery("(max-width: 768px)");
   const [getOptions, response] = useLazyGetOptionsQuery();
   const [showCreateForm, setShowCreateForm] = useState(false);
   const [tabValue, setTabValue] = useState(0);
@@ -55,9 +56,12 @@ export const Option = () => {
           </BtnPrimary>
 
           <div className="mt-[30px]">
-            <Box className={`flex`} sx={{ flexGrow: 1 }}>
+            <Box
+              className={`${isMediumScreen ? "" : "flex"}`}
+              sx={{ flexGrow: 1 }}
+            >
               <Tabs
-                orientation={`vertical`}
+                orientation={isMediumScreen ? "horizontal" : `vertical`}
                 variant="scrollable"
                 scrollButtons
                 allowScrollButtonsMobile
@@ -70,7 +74,8 @@ export const Option = () => {
                 sx={{
                   borderRight: 1,
                   borderColor: "#374151",
-                  height: "75vh",
+                  height: isMediumScreen ? "auto" : "75vh",
+                  width: isMediumScreen ? "100%" : "auto",
                   "& button.Mui-selected": {
                     color: "#EF4444",
                     fontWeight: "bold",
@@ -88,7 +93,7 @@ export const Option = () => {
               <TableContainer>
                 {options?.map((option, index) => (
                   <TabPanel key={index} value={tabValue} index={index}>
-                    <div className="pl-[40px]">
+                    <div className="md:pl-[40px] pl-0">
                       <OptionTable option={option} />
                     </div>
                   </TabPanel>

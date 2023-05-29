@@ -17,6 +17,7 @@ import CategorySlice from "./slice/Category.slice";
 import OptionSlice from "./slice/Option.slice";
 import CustomerOrder from "./slice/CustomerOrder";
 import AdminOrder from "./slice/AdminOrder.slice";
+import interfaceSlice from "./slice/interface.slice";
 
 const reducer = {
   [RootApi.reducerPath]: RootApi.reducer,
@@ -25,7 +26,8 @@ const reducer = {
   category: CategorySlice,
   option: OptionSlice,
   customerOrder: CustomerOrder,
-  adminOrder : AdminOrder
+  adminOrder: AdminOrder,
+  interface: interfaceSlice,
 };
 const combinedReducer = combineReducers<typeof reducer>(reducer);
 
@@ -33,7 +35,7 @@ const persistConfig = {
   key: "root",
   version: 1,
   storage,
-  whitelist: ["auth","customerOrder"],
+  whitelist: ["auth", "customerOrder"],
 };
 
 export const store = configureStore({
