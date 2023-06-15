@@ -21,7 +21,7 @@ interface PropType {
 export const MenuEditForm = ({ onClose, menu }: PropType) => {
   const [update, response] = useUpdateMenuItemMutation();
   const [previewUrl, setPreviewUrl] = useState<string | undefined>(undefined);
-  const [isAvailable, setIsAvailable] = useState(false);
+  const [isAvailable, setIsAvailable] = useState(menu.isAvailable);
   const [file, setFile] = useState<File | null>(null);
   const dispatch = useDispatch();
   const form = useRef<HTMLFormElement>(null!);
@@ -45,20 +45,25 @@ export const MenuEditForm = ({ onClose, menu }: PropType) => {
     if (response.isSuccess) {
       let payload: Category[];
 
-      payload = categories.map((i) =>
-        chosenCategory.map((i) => i.id).includes(i.id)
+      const responsedData: Category_Menu_Items = response.data;
+      const includeCatIds = responsedData.menu_items.category_menu_items.map(
+        (i) => i.categoryId
+      );
+
+      payload = categories.map((i) => ({
+        ...i,
+        category_menu_items: i.category_menu_items.filter(
+          (i) => i.menu_itemsId !== menu.menu_itemsId
+        ),
+      }));
+
+      payload = payload.map((i) =>
+        includeCatIds.includes(i.id)
           ? {
               ...i,
-              category_menu_items: i.category_menu_items.map((i) =>
-                i.menu_itemsId === menu.menu_itemsId ? { ...response.data } : i
-              ),
+              category_menu_items: [responsedData, ...i.category_menu_items],
             }
-          : {
-              ...i,
-              category_menu_items: i.category_menu_items.filter(
-                (i) => i.menu_itemsId !== menu.menu_itemsId
-              ),
-            }
+          : i
       );
 
       dispatch(storeCategories(payload));
@@ -259,7 +264,7 @@ export const MenuEditForm = ({ onClose, menu }: PropType) => {
               width={"full"}
               isLoading={response.isLoading}
             >
-              Create Now
+              Update Now
             </BtnPrimary>
           </div>
         </form>

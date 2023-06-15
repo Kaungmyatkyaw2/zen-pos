@@ -1,7 +1,7 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import { NavLink } from "react-router-dom";
-import { InputField, BtnPrimary } from "../components/form";
+import { InputField, BtnPrimary, CheckboxToggle } from "../components/form";
 import { useSignupMutation } from "../store/service/auth-endpoints/Auth.endpoints";
 import { login } from "../store/slice/Auth.slice";
 import { useFormik } from "formik";
@@ -9,7 +9,7 @@ import { signUpValidate } from "../formik";
 
 export const Signup = () => {
   const [signup, response] = useSignupMutation();
-  const form = useRef<HTMLFormElement>(null!);
+  const [isSeller, setIsSeller] = useState(false);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -31,7 +31,7 @@ export const Signup = () => {
   });
 
   const handleSignup = (values: any) => {
-    signup({ ...values, isSeller: false });
+    signup({ ...values, isSeller });
   };
 
   return (
@@ -60,6 +60,12 @@ export const Signup = () => {
             placeholder="example password"
             type="password"
             {...formik.getFieldProps("password")}
+          />
+          <CheckboxToggle
+            checked={isSeller}
+            onChange={(e) => setIsSeller(e.currentTarget.checked)}
+            leftName="Customer"
+            rightName="Seller"
           />
           <div className="pt-[10px]">
             <BtnPrimary
