@@ -1,7 +1,7 @@
 import { Body, Controller, Get, Patch, Query, UseGuards } from '@nestjs/common';
-import { GetUser } from '../../src/auth/decorator';
-import { JwtGuard } from '../../src/auth/guard';
-import { UserType } from '../../src/auth/types';
+import { GetUser } from 'src/auth/decorator';
+import { JwtGuard } from 'src/auth/guard';
+import { UserType } from 'src/auth/types';
 import { CompanyService } from './company.service';
 import { UpdateCompanyDto } from './dto';
 

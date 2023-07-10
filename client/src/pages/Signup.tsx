@@ -15,6 +15,9 @@ export const Signup = () => {
   useEffect(() => {
     if (response.isSuccess) {
       dispatch(login(response.data.access_token));
+    } else if (response.isError) {
+      // @ts-ignore
+      toast.error(response.error.data.message);
     }
   }, [response]);
 

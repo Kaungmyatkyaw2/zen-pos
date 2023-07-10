@@ -9,9 +9,9 @@ import {
   Query,
   UseGuards,
 } from '@nestjs/common';
-import { GetUser } from '../../src/auth/decorator';
-import { JwtGuard } from '../../src/auth/guard';
-import { UserType } from '../../src/auth/types';
+import { GetUser } from 'src/auth/decorator';
+import { JwtGuard } from 'src/auth/guard';
+import { UserType } from 'src/auth/types';
 import { CreateOptionDto, EditOptionDto } from './dto';
 import { OptionsService } from './options.service';
 

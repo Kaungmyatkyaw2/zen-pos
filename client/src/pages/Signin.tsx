@@ -17,7 +17,7 @@ export const Signin = () => {
       dispatch(login(response.data.access_token));
     } else if (response.isError) {
       // @ts-ignore
-      toast.error("An error Occured");
+      toast.error(response.error.data.message);
     }
   }, [response]);
 
