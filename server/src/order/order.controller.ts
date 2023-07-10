@@ -10,9 +10,9 @@ import {
 } from '@nestjs/common';
 import { OrderService } from './order.service';
 import { CreateOrderDto, UpdateOrderStatus } from './dto';
-import { GetUser } from 'src/auth/decorator';
-import { UserType } from 'src/auth/types';
-import { JwtGuard } from 'src/auth/guard';
+import { GetUser } from '../../src/auth/decorator';
+import { UserType } from '../../src/auth/types';
+import { JwtGuard } from '../../src/auth/guard';
 
 @UseGuards(JwtGuard)
 @Controller('order')

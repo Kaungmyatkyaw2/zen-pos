@@ -13,9 +13,9 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { GetUser } from 'src/auth/decorator';
-import { JwtGuard } from 'src/auth/guard';
-import { UserType } from 'src/auth/types';
+import { GetUser } from './../../src/auth/decorator';
+import { JwtGuard } from './../../src/auth/guard';
+import { UserType } from './../../src/auth/types';
 import { CreateMenuItemDto, EditMenuItemDto } from './dto';
 import { MenuItemsService } from './menu_items.service';
 

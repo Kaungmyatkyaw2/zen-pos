@@ -1,6 +1,6 @@
 import { ForbiddenException, Injectable } from '@nestjs/common';
-import { CloudinaryService } from 'src/cloudinary/cloudinary.service';
-import { PrismaService } from 'src/prisma/prisma.service';
+import { CloudinaryService } from '../../src/cloudinary/cloudinary.service';
+import { PrismaService } from '../../src/prisma/prisma.service';
 import { CreateMenuItemDto, EditMenuItemDto } from './dto';
 
 @Injectable()
