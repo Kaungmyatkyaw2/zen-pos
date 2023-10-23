@@ -16,8 +16,9 @@ export const Signin = () => {
     if (response.isSuccess) {
       dispatch(login(response.data.access_token));
     } else if (response.isError) {
+      console.log(response)
       // @ts-ignore
-      toast.error(response.error.data.message);
+      toast.error("Something went wrong");
     }
   }, [response]);
 

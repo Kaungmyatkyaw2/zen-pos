@@ -9,11 +9,11 @@ import {
   Query,
   UseGuards,
 } from '@nestjs/common';
-import { GetUser } from 'src/auth/decorator';
-import { JwtGuard } from 'src/auth/guard';
-import { UserType } from 'src/auth/types';
-import { CategoryService } from './category.service';
-import { CreateCategoryDto } from './dto';
+import { GetUser } from '../auth/decorator';
+import { JwtGuard } from '../auth/guard';
+import { UserType } from '../auth/types';
+import { CategoryService } from '../category/category.service';
+import { CreateCategoryDto } from '../category/dto';
 
 @UseGuards(JwtGuard)
 @Controller('category')

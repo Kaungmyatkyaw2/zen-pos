@@ -4,7 +4,7 @@ const RootApi = createApi({
   reducerPath: "Api",
   tagTypes: ["update"],
   baseQuery: fetchBaseQuery({
-    baseUrl: "http://localhost:3333",
+    baseUrl: "https://zen-pos-kaungmyatkyaw2.vercel.app",
     prepareHeaders: (header) => {
       localStorage.getItem("pos_at")
         ? header.set(

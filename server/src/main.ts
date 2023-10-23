@@ -9,7 +9,11 @@ async function bootstrap() {
       whitelist: true,
     }),
   );
-  app.enableCors();
+  app.enableCors({
+    origin: '*',
+    optionsSuccessStatus: 204,
+    preflightContinue: true,
+  });
   await app.listen(process.env.PORT || 3333);
 }
 bootstrap();

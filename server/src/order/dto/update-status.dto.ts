@@ -1,4 +1,4 @@
-import { OrderlineStatus } from 'src/orderline/type';
+import { OrderlineStatus } from '../../orderline/type';
 
 export interface UpdateOrderStatus {
   updateStatus: OrderlineStatus;
